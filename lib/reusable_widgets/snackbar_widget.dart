@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 class SlidingSnackBar extends StatefulWidget {
   final String message;
   final Duration duration;
+  final bool success;
 
   const SlidingSnackBar({
     super.key,
     required this.message,
-    this.duration = const Duration(seconds: 2),
+    this.duration = const Duration(seconds: 2), required this.success,
   });
 
   @override
@@ -51,6 +52,8 @@ class _SlidingSnackBarState extends State<SlidingSnackBar>
         end: const Offset(0, 0),
       ).animate(_controller),
       child: SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: widget.success ? Colors.green : Colors.red,
         content: Text(widget.message),
       ),
     );

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rolanda_modified_version/routes/routes.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -91,7 +92,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      
+                      Navigator.pushNamed(context, Routes.login);
                     },
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),

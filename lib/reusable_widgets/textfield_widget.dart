@@ -1,60 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class CustomTextField extends StatefulWidget {
-  final TextEditingController? controller;
-  final String hintText;
-  final Widget? lable;
-  final Widget? prefixIcon;
-  final Widget? sufixIcon;
-  const CustomTextField(
-      {super.key,
-      this.controller,
-      required this.hintText,
-      this.lable,
-      this.prefixIcon,
-      this.sufixIcon,});
+class CustomTextFormField extends StatelessWidget {
+  final TextEditingController controller;
+  final String label;
+  final Icon prefixIcon;
+  final bool obscureText;
+  final Function(String?) validator;
+  final VoidCallback? suffixIconOnPressed;
+  final Icon? suffixIcon;
 
-  @override
-  State<CustomTextField> createState() => _CustomTextFieldState();
-}
+  const CustomTextFormField({
+    required this.controller,
+    required this.label,
+    required this.prefixIcon,
+    this.obscureText = false,
+    required this.validator,
+    this.suffixIconOnPressed,
+    this.suffixIcon,
+    super.key,
+  });
 
-class _CustomTextFieldState extends State<CustomTextField> {
-  String? _error;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: widget.controller,
-      onChanged: (value) {
-        if (value.contains("@") == false) {
-          setState(() {
-            _error = "Should have @ symbol";
-          });
-        } else {
-          setState(() {
-            _error = null;
-          });
-        }
-      },
+      controller: controller,
+      obscureText: obscureText,
       decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12),
-          hintText: widget.hintText,
-          errorText: _error,
-          prefix: widget.prefixIcon,
-          suffixIcon: widget.sufixIcon,
-          isDense: true,
-          errorMaxLines: 1,
-          errorStyle: const TextStyle(fontWeight: FontWeight.bold),
-          errorBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.red, width: 1.5),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.red, width: 1.5),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        label: Text(label),
+        labelStyle: GoogleFonts.poppins(),
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIconOnPressed != null
+            ? IconButton(
+                icon: suffixIcon!,
+                onPressed: suffixIconOnPressed,
+              )
+            : null,
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
       ),
+      validator: (value) => validator(value),
     );
   }
 }
