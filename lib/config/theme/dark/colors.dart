@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+
+final ColorScheme darkColorScheme = ColorScheme.fromSwatch(
+  brightness: Brightness.dark,
+).copyWith(
+  primary: const Color(0xFF94cdf7),
+  onPrimary: const Color(0xFF00344d), 
+  primaryContainer: const Color(0xFF004c6e),
+  onPrimaryContainer: const Color(0xffc9e6ff),
+  secondary: const Color(0xffb7c9d9),
+  onSecondary: const Color(0xff21323f),
+  secondaryContainer: const Color(0xff384956),
+  onSecondaryContainer: const Color(0xffd3e5f5),
+  tertiary: const Color(0xffcec0e8),
+  onTertiary: const Color(0xff352b4b),
+  tertiaryContainer: const Color(0xff4c4163),
+  onTertiaryContainer: const Color(0xffeaddff),
+  error: const Color(0xFFffb4ab),
+  onError: const Color(0xff690005),
+  errorContainer: const Color(0xff93000a),
+  onErrorContainer: const Color(0xffffdad6),
+  surfaceDim: const Color(0xff101417),
+  surface: const Color(0xff101417),
+  surfaceBright: const Color(0xff353a3e),
+  inverseSurface: const Color(0xffdfe3e8),
+  surfaceContainerLowest: const Color(0xff0a0f12),
+  surfaceContainerLow: const Color(0xff181c20),
+  surfaceContainer: const Color(0xff1c2024),
+  surfaceContainerHigh: const Color(0xff262a2e),
+  surfaceContainerHighest: const Color(0xff313539),
+  inversePrimary: const Color(0xff256489),
+  onSurface: const Color(0xffdfe3e8),
+  onSurfaceVariant: const Color(0xffc1c7ce),
+  outline: const Color(0xff8b9198),
+  outlineVariant: const Color(0xff42474d),
+  scrim: const Color(0xff000000),
+  shadow: const Color(0xff000000)
+);
