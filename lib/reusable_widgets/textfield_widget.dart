@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rolanda_modified_version/utils/dimensions.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
@@ -26,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
+      obscuringCharacter: "*",
       decoration: InputDecoration(
         label: Text(label),
         labelStyle: GoogleFonts.poppins(),
@@ -36,8 +38,8 @@ class CustomTextFormField extends StatelessWidget {
                 onPressed: suffixIconOnPressed,
               )
             : null,
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        contentPadding: EdgeInsets.symmetric(
+            vertical: Dimensions.height15, horizontal: Dimensions.width15),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4),
         ),

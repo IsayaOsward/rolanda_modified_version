@@ -20,9 +20,7 @@ class LanguageProvider extends ChangeNotifier {
 
   Future<void> _loadLanguagePreference() async {
     String? language = await _preferencesService.getLanguagePreference();
-    if (language != null) {
-      isSwahili = language == 'sw';
-    }
-    notifyListeners();
+    isSwahili = language == 'sw';
+      notifyListeners();
   }
 }

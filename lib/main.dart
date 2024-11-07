@@ -12,6 +12,7 @@ import 'package:rolanda_modified_version/repository/login_repository.dart';
 import 'package:rolanda_modified_version/routes/route_generator.dart';
 import 'package:rolanda_modified_version/routes/routes.dart';
 import 'package:rolanda_modified_version/service_impl/login_service_impl.dart';
+import 'package:rolanda_modified_version/utils/dimensions.dart';
 import 'package:rolanda_modified_version/utils/preferences_service.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     screenSize = MediaQuery.of(context).size;
+    Dimensions.init(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
     return MaterialApp(

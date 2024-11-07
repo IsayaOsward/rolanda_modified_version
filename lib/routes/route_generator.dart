@@ -9,10 +9,10 @@ class RouteGenerator {
     switch (settings.name) {
       case Routes.welcome:
         return MaterialPageRoute(builder: (_) => const OnBoardingScreen());
-      case Routes.home:
+      case Routes.register:
         return MaterialPageRoute(builder: (_) => const RegistrationScreen());
       case Routes.login:
-        return MaterialPageRoute(builder: (_) => const Login());      
+        return MaterialPageRoute(builder: (_) => const Login());
       default:
         return _errorRoute();
     }

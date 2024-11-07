@@ -18,16 +18,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final List<Map<String, String>> onboardingData = [
     {
       'title': 'Capture',
-      'preSubtitle': "Issues",
-      'subtitle': 'Instantly',
-      'description': 'Use built-in camera features to document property conditions and ensure timely, accurate reporting.',
-      'image': 'assets/images/welcome.jpg',
+      'preSubtitle': "Issues Instantly with",
+      'subtitle': 'Rolanda',
+      'description':
+          'Use built-in camera features to document property conditions and ensure timely, accurate reporting.',
+      'image': 'assets/images/welcome1.png',
     },
     {
       'title': 'Real-Time',
       'preSubtitle': "Maintenace",
       'subtitle': 'Tracking',
-      'description': 'Receive notifications for updates and get instant access to all details.',
+      'description':
+          'Receive notifications for updates and get instant access to all details.',
       'image': 'assets/images/welcome.jpg',
     },
     {
@@ -41,7 +43,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       'title': 'Connected',
       'preSubtitle': "and",
       'subtitle': 'Informed',
-      'description': 'Receive notifications for updates and get instant access to all details.',
+      'description':
+          'Receive notifications for updates and get instant access to all details.',
       'image': 'assets/images/welcome.jpg',
     },
   ];
@@ -56,6 +59,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             options: CarouselOptions(
               height: double.infinity,
               viewportFraction: 1.0,
+              autoPlay: true,
               enableInfiniteScroll: false,
               onPageChanged: (index, reason) {
                 setState(() => _currentIndex = index);
@@ -79,7 +83,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
                 onboardingData.length,
-                    (index) => buildIndicator(index == _currentIndex),
+                (index) => buildIndicator(index == _currentIndex),
               ),
             ),
           ),
@@ -95,8 +99,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       Navigator.pushNamed(context, Routes.login);
                     },
                     style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
-                      foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSurface),
+                      backgroundColor: WidgetStateProperty.all(
+                          Theme.of(context).colorScheme.primary),
+                      foregroundColor: WidgetStateProperty.all(
+                          Theme.of(context).colorScheme.onSurface),
                     ),
                     child: const Text("SIGN IN"),
                   ),
@@ -104,14 +110,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   ElevatedButton(
                     onPressed: () {},
                     style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary.withOpacity(0.36)),
-                      foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.surface),
+                      backgroundColor: WidgetStateProperty.all(Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.36)),
+                      foregroundColor: WidgetStateProperty.all(
+                          Theme.of(context).colorScheme.surface),
                     ),
-                    child: const Text("ENTER AS A GUEST"),
+                    child: const Text("CONTINUE AS A GUEST"),
                   ),
                 ],
               ),
-
             ),
           ),
           Padding(
@@ -123,7 +132,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   child: Text(
                     "By continuing you agree to the Terms of\nServices & Privacy Policy",
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Theme.of(context).colorScheme.surface),
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.surface),
                   ),
                 ),
               ],
@@ -134,7 +144,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     );
   }
 
-  Widget buildCarouselPage(BuildContext context, String title, String preSubtitle, String subtitle, String description, String image) {
+  Widget buildCarouselPage(BuildContext context, String title,
+      String preSubtitle, String subtitle, String description, String image) {
     return Stack(
       children: [
         Container(
@@ -149,7 +160,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           color: Colors.black.withOpacity(0.6),
         ),
         Align(
-          alignment: const Alignment(0,0.6),
+          alignment: const Alignment(0, 0.6),
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -174,7 +185,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         fontSize: 24,
                       ),
                     ),
-                    const SizedBox(width: 5,),
+                    const SizedBox(
+                      width: 5,
+                    ),
                     Text(
                       subtitle,
                       style: GoogleFonts.roboto(
@@ -201,9 +214,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   Widget buildIndicator(bool isActive) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
-      margin: const EdgeInsets.symmetric(horizontal: 5,vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       height: 5,
-      width: 24 ,
+      width: 24,
       decoration: BoxDecoration(
         color: isActive ? Theme.of(context).colorScheme.primary : Colors.white,
         borderRadius: BorderRadius.circular(5),

@@ -5,6 +5,7 @@ import 'package:rolanda_modified_version/reusable_widgets/custom_button.dart';
 import 'package:rolanda_modified_version/reusable_widgets/header.dart';
 import 'package:rolanda_modified_version/reusable_widgets/snackbar_widget.dart';
 import 'package:rolanda_modified_version/reusable_widgets/textfield_widget.dart';
+import 'package:rolanda_modified_version/routes/routes.dart';
 import 'package:rolanda_modified_version/utils/inputs_validation.dart';
 
 class Login extends StatefulWidget {
@@ -69,7 +70,8 @@ class _LoginState extends State<Login> {
                           });
                         },
                         validator: (value) {
-                          return Validator.validateLoginPassword(value, context);
+                          return Validator.validateLoginPassword(
+                              value, context);
                         },
                       ),
                       Align(
@@ -117,17 +119,14 @@ class _LoginState extends State<Login> {
                               },
                       ),
                       SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.04),
-                      const Text("Or Sign in With"),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.04),
+                          height: MediaQuery.of(context).size.height * 0.03),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text("Don't have an Account?"),
                           TextButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, "/register");
+                              Navigator.pushNamed(context, Routes.register);
                             },
                             child: const Text("Sign Up"),
                           ),
