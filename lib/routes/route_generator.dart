@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rolanda_modified_version/routes/routes.dart';
 import 'package:rolanda_modified_version/views/auth/login.dart';
 import 'package:rolanda_modified_version/views/auth/registration_screen.dart';
+import 'package:rolanda_modified_version/views/homescreen/guest_home_pages.dart';
 import 'package:rolanda_modified_version/views/onboarding/on_boarding_screen.dart';
 
 class RouteGenerator {
@@ -13,6 +14,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const RegistrationScreen());
       case Routes.login:
         return MaterialPageRoute(builder: (_) => const Login());
+      case Routes.guest:
+        return MaterialPageRoute(builder: (_) => const GuestHomePages());
       default:
         return _errorRoute();
     }
