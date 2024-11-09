@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:rolanda_modified_version/config/base_url.dart';
 import 'package:rolanda_modified_version/config/theme/dark/theme.dart';
 import 'package:rolanda_modified_version/config/theme/light/theme.dart';
+import 'package:rolanda_modified_version/providers/check_availability_provider.dart';
+import 'package:rolanda_modified_version/providers/hotels_provider.dart';
 import 'package:rolanda_modified_version/providers/login_provider.dart';
 import 'package:rolanda_modified_version/providers/language_provider.dart';
 import 'package:rolanda_modified_version/providers/theme_provider.dart';
@@ -28,6 +30,7 @@ Future<void> main() async {
   runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => CheckAvailabilityProvider()),
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
         ChangeNotifierProvider(
           create: (_) => LoginProvider(
@@ -36,9 +39,10 @@ Future<void> main() async {
             ),
           ),
         ),
+        ChangeNotifierProvider(create: (_) => HotelsProvider()),
       ],
       child: const MyApp(
-        initialRoute: Routes.welcome,
+        initialRoute: Routes.guest,
       )));
 }
 

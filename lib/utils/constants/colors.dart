@@ -11,6 +11,8 @@ class AppColor {
   static const redColor = Colors.red;
   static const greenColor = Colors.green;
   static const transparentColor = Colors.transparent;
+  static const greyInputFill = Color(0xffEDEDED);
+
 }
 
 List<String> carCategories = ["All", "Toyota", "BMW", "Range", "Suzuki"];
