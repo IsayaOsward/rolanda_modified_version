@@ -6,6 +6,7 @@ import 'package:rolanda_modified_version/config/base_url.dart';
 import 'package:rolanda_modified_version/config/theme/dark/theme.dart';
 import 'package:rolanda_modified_version/config/theme/light/theme.dart';
 import 'package:rolanda_modified_version/providers/add_to_selection_provider.dart';
+import 'package:rolanda_modified_version/providers/booking_provider.dart';
 import 'package:rolanda_modified_version/providers/check_availability_provider.dart';
 import 'package:rolanda_modified_version/providers/contact_provider.dart';
 import 'package:rolanda_modified_version/providers/hotels_provider.dart';
@@ -16,8 +17,10 @@ import 'package:rolanda_modified_version/repository/contact_repository.dart';
 import 'package:rolanda_modified_version/repository/login_repository.dart';
 import 'package:rolanda_modified_version/routes/route_generator.dart';
 import 'package:rolanda_modified_version/routes/routes.dart';
+import 'package:rolanda_modified_version/service_impl/booking_service_impl.dart';
 import 'package:rolanda_modified_version/service_impl/contact_service_impl.dart';
 import 'package:rolanda_modified_version/service_impl/login_service_impl.dart';
+import 'package:rolanda_modified_version/services/booking_service.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
 import 'package:rolanda_modified_version/utils/preferences_service.dart';
 
@@ -45,6 +48,12 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider(create: (_) => HotelsProvider()),
         ChangeNotifierProvider(create: (_) => AddToSelectionProvider()),
+        Provider<BookingService>(create: (_) => BookingServiceImpl()),
+        ChangeNotifierProvider(
+          create: (context) => BookingProvider(
+            Provider.of<BookingService>(context, listen: false),
+          ),
+        ),
         ChangeNotifierProvider(
           create: (_) => ContactProvider(
             contactRepository: ContactRepository(
@@ -54,7 +63,7 @@ Future<void> main() async {
         ),
       ],
       child: const MyApp(
-        initialRoute: Routes.contactUs,
+        initialRoute: Routes.guest,
       )));
 }
 

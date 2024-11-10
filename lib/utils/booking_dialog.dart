@@ -50,6 +50,12 @@ class _BookingDialogState extends State<BookingDialog> {
   }
 
   @override
+  void initState() {
+    _selectedCategory = (widget.hotel.roomTypes[0].type);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final checkAvailabilityProvider =
         Provider.of<CheckAvailabilityProvider>(context);
@@ -57,7 +63,6 @@ class _BookingDialogState extends State<BookingDialog> {
       categories.add(widget.hotel.roomTypes[i].type);
     }
     categories.toList();
-    _selectedCategory = (widget.hotel.roomTypes[0].type);
 
     return Dialog(
       shape: const RoundedRectangleBorder(
@@ -271,8 +276,8 @@ class _BookingDialogState extends State<BookingDialog> {
                               context: context,
                               builder: (context) => AlertDialog(
                                 title: const Text('Error'),
-                                content:
-                                    const Text("Internal server error has occurred"),
+                                content: const Text(
+                                    "Internal server error has occurred"),
                                 actions: [
                                   TextButton(
                                     onPressed: () {

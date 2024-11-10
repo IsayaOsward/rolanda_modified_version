@@ -6,4 +6,5 @@ class ImageAssets {
   static const String searchIcon = "assets/images/search.png";
   static const String placeHolderImage = "assets/images/placeholder.png";
   static const String bookmark = "assets/images/bookmark.png";
+  static const String profileImage = "assets/images/profile.jpg";
 }
