@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rolanda_modified_version/providers/add_to_selection_provider.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
 import 'package:rolanda_modified_version/utils/hotel_data_extractor_helper.dart';
 
@@ -22,6 +24,7 @@ class AvailabilityResults extends StatelessWidget {
     String checkin = resultData['checkin'] ?? 'No Check-in Date';
     String checkout = resultData['checkout'] ?? 'No Checkout Date';
     List rooms = resultData['rooms'] ?? [];
+    final selectionProvider = Provider.of<AddToSelectionProvider>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -36,7 +39,6 @@ class AvailabilityResults extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Display hotel, room type, check-in, and check-out
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -108,15 +110,24 @@ class AvailabilityResults extends StatelessWidget {
                           borderSide: BorderSide.none,
                         ),
                         child: ListTile(
-                          onTap: () {
-                            
+                          onTap: () async {
+                            await selectionProvider.addToSelection(
+                                hotelData.id,
+                                hotel,
+                                newData['price'],
+                                newData['numberOfBeds'],
+                                checkin,
+                                checkout,
+                                room['room_type'],
+                                room['id']);
                           },
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 'Room Number: ${room['room_number']}',
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 'RID: ${room['rid']}',

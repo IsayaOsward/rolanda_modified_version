@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rolanda_modified_version/routes/routes.dart';
 import 'package:rolanda_modified_version/views/auth/login.dart';
 import 'package:rolanda_modified_version/views/auth/registration_screen.dart';
+import 'package:rolanda_modified_version/views/screens/contacts/contact_us.dart';
 import 'package:rolanda_modified_version/views/screens/guest_home_pages.dart';
 import 'package:rolanda_modified_version/views/onboarding/on_boarding_screen.dart';
 
@@ -16,6 +17,9 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const Login());
       case Routes.guest:
         return MaterialPageRoute(builder: (_) => const GuestHomePages());
+      case Routes.contactUs:
+        return MaterialPageRoute(builder: (_) => ContactUs());
+      
       default:
         return _errorRoute();
     }

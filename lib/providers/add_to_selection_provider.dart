@@ -32,22 +32,26 @@ class AddToSelectionProvider extends ChangeNotifier {
     //
     isLoading = true;
     Map<String, dynamic> selectionData = {
-      "hotel_id": 1,
-      "hotel_name": "Gran Melia Hotel",
-      "room_price": 50.0,
-      "number_of_beds": 2,
-      "check_in": "2024-08-23",
-      "check_out": "2024-08-25",
-      "room_type_id": 1,
-      "room_id": 1
+      "hotel_id": hotelID,
+      "hotel_name": hotelName,
+      "room_price": hotelPrice,
+      "number_of_beds": numberOfBeds,
+      "check_in": checkInDate,
+      "check_out": checkOutDate,
+      "room_type_id": roomTypeId,
+      "room_id": roomId
     };
 
     final url = Uri.parse('$baseUrl/booking/api/add-to-selection/');
     try {
       final result = await http.post(url, body: jsonEncode(selectionData));
-      if (result.statusCode == 200) {}
+      if (result.statusCode == 200) {
+        print(result.body);
+      }
     } catch (e) {
-      
+      print("NULL");
+    } finally {
+      notifyListeners();
     }
   }
 }
