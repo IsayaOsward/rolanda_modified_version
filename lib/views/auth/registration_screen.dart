@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:rolanda_modified_version/providers/login_provider.dart';
 import 'package:rolanda_modified_version/reusable_widgets/custom_button.dart';
 import 'package:rolanda_modified_version/reusable_widgets/header.dart';
-import 'package:rolanda_modified_version/reusable_widgets/snackbar_widget.dart';
 import 'package:rolanda_modified_version/reusable_widgets/textfield_widget.dart';
 import 'package:rolanda_modified_version/routes/routes.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
@@ -156,12 +155,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                               Text(provider.errorMessage!)),
                                     );
                                   } else {
-                                    showDialog(
-                                      context: context,
-                                      builder: (_) => const SlidingSnackBar(
-                                        message: "Registered successful!",
-                                        success: true,
-                                      ),
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content:
+                                              Text("Registered Successful!")),
                                     );
                                   }
                                 }

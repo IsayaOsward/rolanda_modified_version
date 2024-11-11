@@ -32,9 +32,6 @@ class BookingProvider with ChangeNotifier {
         roomType,
         roomId,
       );
-    } catch (e) {
-      // Handle any errors, maybe show a Snackbar or Dialog
-      print('Booking failed: $e');
     } finally {
       _setLoading(false);
     }

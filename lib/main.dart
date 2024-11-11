@@ -63,7 +63,7 @@ Future<void> main() async {
         ),
       ],
       child: const MyApp(
-        initialRoute: Routes.guest,
+        initialRoute: Routes.login,
       )));
 }
 

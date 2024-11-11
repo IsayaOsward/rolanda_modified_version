@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:rolanda_modified_version/providers/login_provider.dart';
 import 'package:rolanda_modified_version/reusable_widgets/custom_button.dart';
 import 'package:rolanda_modified_version/reusable_widgets/header.dart';
-import 'package:rolanda_modified_version/reusable_widgets/snackbar_widget.dart';
 import 'package:rolanda_modified_version/reusable_widgets/textfield_widget.dart';
 import 'package:rolanda_modified_version/routes/routes.dart';
 import 'package:rolanda_modified_version/utils/inputs_validation.dart';
@@ -103,15 +102,18 @@ class _LoginState extends State<Login> {
                                   if (provider.errorMessage != null) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                          content:
-                                              Text(provider.errorMessage!)),
+                                        content: Text(
+                                          provider.errorMessage!,
+                                        ),
+                                      ),
                                     );
                                   } else {
-                                    showDialog(
-                                      context: context,
-                                      builder: (_) => const SlidingSnackBar(
-                                        message: "Login successful!",
-                                        success: true,
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        backgroundColor: Colors.green,
+                                        content: Text(
+                                          "Login successful!",
+                                        ),
                                       ),
                                     );
                                   }

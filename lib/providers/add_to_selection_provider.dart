@@ -47,9 +47,6 @@ class AddToSelectionProvider extends ChangeNotifier {
           headers: headers, body: jsonEncode(selectionData));
       if (result.statusCode == 201) {
         isSuccessful = true;
-        print("object");
-      } else {
-        print(result.body);
       }
     } finally {
       isLoading = false;

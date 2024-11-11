@@ -10,7 +10,7 @@ class CustomTextField extends StatelessWidget {
   final bool expandOnTyping; // New parameter
 
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.labelText,
     this.validator,
@@ -18,7 +18,7 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.obscureText = false,
     this.expandOnTyping = false, // Default to false
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
