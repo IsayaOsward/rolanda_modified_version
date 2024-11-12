@@ -3,11 +3,12 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:rolanda_modified_version/config/base_url.dart';
 import 'package:rolanda_modified_version/utils/date_converter.dart';
+import 'package:rolanda_modified_version/utils/storage_service.dart';
 
 class AddToSelectionProvider extends ChangeNotifier {
   bool isLoading = false;
   bool isSuccessful = false; // Track success
-
+  final storageService = StorageService();
   Future<void> addToSelection(
     int hotelID,
     String hotelName,
@@ -24,6 +25,7 @@ class AddToSelectionProvider extends ChangeNotifier {
     isSuccessful = false;
     notifyListeners();
 
+    String? token = await storageService.getUserToken();
     Map<String, dynamic> selectionData = {
       "hotel_id": hotelID,
       "hotel_name": hotelName,
@@ -39,8 +41,7 @@ class AddToSelectionProvider extends ChangeNotifier {
     final url = Uri.parse('$baseUrl/booking/api/add-to-selection/');
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxMjQ3OTI1LCJpYXQiOjE3MzEyNDQzMjUsImp0aSI6ImQyNGVmNzAzMDFhODRjYzk5NmFhZTUzZGFhN2ZkMGU4IiwidXNlcl9pZCI6N30.tA6GBtOzDlpUkdsoCxvONsF1SSQt4mNt1dChd5trQKU'
+      'Authorization': 'Bearer $token'
     };
     try {
       final result = await http.post(url,

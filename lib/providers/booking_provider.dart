@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rolanda_modified_version/services/booking_service.dart';
+import 'package:rolanda_modified_version/services/confirm_booking_service.dart';
 
 class BookingProvider with ChangeNotifier {
   bool _isLoading = false;

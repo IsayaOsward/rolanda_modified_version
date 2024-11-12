@@ -4,32 +4,35 @@ class StorageService {
   // Initialize FlutterSecureStorage
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
-  // Method to save user data
+  // Method to save user data with expiration time
   Future<void> saveUserData({
     required String username,
     required String email,
     required String accessToken,
     required String refreshToken,
   }) async {
+    final DateTime expTime = DateTime.now().add(const Duration(minutes: 55));
+    final String expTimeString = expTime.toIso8601String();
+
     await _storage.write(key: 'username', value: username);
     await _storage.write(key: 'email', value: email);
     await _storage.write(key: 'access', value: accessToken);
     await _storage.write(key: 'refresh', value: refreshToken);
+    await _storage.write(key: 'expTime', value: expTimeString);
   }
 
-  // Method to retrieve user data
-  Future<Map<String, String?>> getUserData() async {
-    String? username = await _storage.read(key: 'username');
-    String? email = await _storage.read(key: 'email');
-    String? accessToken = await _storage.read(key: 'access');
-    String? refreshToken = await _storage.read(key: 'refresh');
+  // Method to check if token has expired
+  Future<bool> isTokenExpired() async {
+    String? expTimeString = await _storage.read(key: 'expTime');
+    if (expTimeString == null) return true;
 
-    return {
-      'username': username,
-      'email': email,
-      'access': accessToken,
-      'refresh': refreshToken,
-    };
+    final DateTime expTime = DateTime.parse(expTimeString);
+    return DateTime.now().isAfter(expTime);
+  }
+
+  // method to get user access token
+  Future<String?> getUserToken() async {
+    return await _storage.read(key: 'access');
   }
 
   // Method to clear user data during log out

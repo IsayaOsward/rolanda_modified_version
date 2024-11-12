@@ -108,6 +108,7 @@ class _LoginState extends State<Login> {
                                       ),
                                     );
                                   } else {
+                                    Navigator.pushReplacementNamed(context, Routes.homepage);
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         backgroundColor: Colors.green,

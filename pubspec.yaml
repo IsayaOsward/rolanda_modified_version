@@ -51,6 +51,7 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   sqflite: ^2.4.1
   flutter_secure_storage: ^9.2.2
+  flashy_tab_bar2: ^0.0.10
 
 dev_dependencies:
   flutter_test:

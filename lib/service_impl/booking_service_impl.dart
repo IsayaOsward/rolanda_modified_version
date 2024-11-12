@@ -2,9 +2,11 @@ import 'package:http/http.dart' as http;
 import 'package:rolanda_modified_version/config/base_url.dart';
 import 'dart:convert';
 
-import 'package:rolanda_modified_version/services/booking_service.dart';
+import 'package:rolanda_modified_version/services/confirm_booking_service.dart';
+import 'package:rolanda_modified_version/utils/storage_service.dart';
 
 class BookingServiceImpl implements BookingService {
+  final storageService = StorageService();
   @override
   Future<void> confirmBooking(
     int hotelId,
@@ -16,10 +18,10 @@ class BookingServiceImpl implements BookingService {
     int roomId,
   ) async {
     const url = '$baseUrl/api/selected-rooms/';
-   final headers = {
+    String? token = await storageService.getUserToken();
+    final headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxMjQ3OTI1LCJpYXQiOjE3MzEyNDQzMjUsImp0aSI6ImQyNGVmNzAzMDFhODRjYzk5NmFhZTUzZGFhN2ZkMGU4IiwidXNlcl9pZCI6N30.tA6GBtOzDlpUkdsoCxvONsF1SSQt4mNt1dChd5trQKU'
+      'Authorization': 'Bearer $token'
     };
 
     final body = jsonEncode({
@@ -37,7 +39,7 @@ class BookingServiceImpl implements BookingService {
         Uri.parse(url),
         headers: headers,
         body: body,
-      );
+      ); 
 
       if (response.statusCode == 201) {
         // Handle success response

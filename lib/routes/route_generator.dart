@@ -5,6 +5,7 @@ import 'package:rolanda_modified_version/views/auth/registration_screen.dart';
 import 'package:rolanda_modified_version/views/contacts/contact_us.dart';
 import 'package:rolanda_modified_version/views/screens/guest_home_pages.dart';
 import 'package:rolanda_modified_version/views/onboarding/on_boarding_screen.dart';
+import 'package:rolanda_modified_version/views/screens/homepage.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -19,6 +20,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const GuestHomePages());
       case Routes.contactUs:
         return MaterialPageRoute(builder: (_) => ContactUs());
+      case Routes.homepage:
+        return MaterialPageRoute(builder: (_) => const Homepage());
       // case Routes.profile:
       //   return MaterialPageRoute(builder: (_) => const ProfileScreen());
 

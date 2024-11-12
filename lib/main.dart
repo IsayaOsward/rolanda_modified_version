@@ -20,9 +20,13 @@ import 'package:rolanda_modified_version/routes/routes.dart';
 import 'package:rolanda_modified_version/service_impl/booking_service_impl.dart';
 import 'package:rolanda_modified_version/service_impl/contact_service_impl.dart';
 import 'package:rolanda_modified_version/service_impl/login_service_impl.dart';
-import 'package:rolanda_modified_version/services/booking_service.dart';
+import 'package:rolanda_modified_version/services/confirm_booking_service.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
 import 'package:rolanda_modified_version/utils/preferences_service.dart';
+
+import 'providers/fetch_booking_provider.dart';
+import 'repository/fetch_booking_repository.dart';
+import 'service_impl/fetch_booking_service_impl.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final preferencesService = PreferencesService();
@@ -58,6 +62,19 @@ Future<void> main() async {
           create: (_) => ContactProvider(
             contactRepository: ContactRepository(
               contactService: ContactServiceImpl(),
+            ),
+          ),
+        ),
+        Provider(
+          create: (_) => ReservationRepository(
+            ReservationServiceImpl()  ,
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ReservationProvider(
+            repository: Provider.of<ReservationRepository>(
+              context,
+              listen: false,
             ),
           ),
         ),
