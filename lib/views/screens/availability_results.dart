@@ -73,29 +73,34 @@ class AvailabilityResults extends StatelessWidget {
               TextButton(
                 onPressed: () async {
                   bool response = await confirmBooking.confirmBooking(
-                      hotelID,
-                      convertToYyyyMmDd(checkInDate),
-                      convertToYyyyMmDd(checkOutDate),
-                      adult,
-                      children,
-                      resultData['room_type'],
-                      roomId);
+                    hotelID,
+                    convertToYyyyMmDd(checkInDate),
+                    convertToYyyyMmDd(checkOutDate),
+                    adult,
+                    children,
+                    resultData['room_type'],
+                    roomId,
+                  );
+
                   if (response) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         backgroundColor: Colors.green,
                         content: Text(
-                          "Booking placed successful!",
+                          "Booking placed successfully!",
                           style: TextStyle(
                             color: Colors.white,
                           ),
                         ),
                       ),
                     );
-                    Navigator.pushReplacementNamed(
-                      context,
-                      Routes.homepage,
-                    );
+                    Future.delayed(const Duration(seconds: 2), () {
+                      Navigator.pop(context);
+                      Navigator.pushReplacementNamed(
+                        context,
+                        Routes.homepage,
+                      );
+                    });
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -108,8 +113,10 @@ class AvailabilityResults extends StatelessWidget {
                         ),
                       ),
                     );
+                    Future.delayed(const Duration(seconds: 2), () {
+                      Navigator.pop(context);
+                    });
                   }
-                  Navigator.pop(context);
                 },
                 child: const Text("Confirm Booking"),
               ),

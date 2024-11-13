@@ -18,7 +18,6 @@ class _LoginState extends State<Login> {
   final formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
-
   bool isVisible = true;
 
   @override
@@ -108,7 +107,8 @@ class _LoginState extends State<Login> {
                                       ),
                                     );
                                   } else {
-                                    Navigator.pushReplacementNamed(context, Routes.homepage);
+                                    Navigator.pushReplacementNamed(
+                                        context, Routes.homepage);
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         backgroundColor: Colors.green,

@@ -1,9 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rolanda_modified_version/config/base_url.dart';
 import 'package:rolanda_modified_version/config/theme/custom_swatch.dart';
+import 'package:rolanda_modified_version/providers/token_provider.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
+import 'package:rolanda_modified_version/utils/storage_service.dart';
 import '../../providers/profile_provider.dart';
 import '../../providers/theme_provider.dart';
 import '../../routes/routes.dart';
@@ -29,8 +33,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final colorTheme = Theme.of(context).colorScheme;
-    bool value = false;
-
+    Provider.of<TokenProvider>(context);
     return SafeArea(
       child: Scaffold(
         backgroundColor: colorTheme.surface,
@@ -47,7 +50,8 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             }
 
             if (provider.errorMessage.isNotEmpty) {
-              return const Center(child: Text('Sorry!: We are unable to fetch your profile'));
+              return const Center(
+                  child: Text('Sorry!: We are unable to fetch your profile'));
             }
 
             final profile = provider.profile;
@@ -188,7 +192,9 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                             ),
                           ),
                           const Divider(),
-                          SizedBox(height: Dimensions.height10,),
+                          SizedBox(
+                            height: Dimensions.height10,
+                          ),
                           Column(
                             children: [
                               ListTile(
@@ -201,8 +207,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                                   ),
                                   child: const Icon(
                                     Icons.brightness_6,
-                                    color:
-                                        customSwatch,
+                                    color: customSwatch,
                                   ),
                                 ),
                                 title: const Text(
@@ -217,7 +222,13 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                                 ),
                               ),
                               ListTile(
-                                onTap: () {
+                                onTap: () async {
+                                  await StorageService().clearUserData();
+
+                                  await Provider.of<TokenProvider>(context,
+                                          listen: false)
+                                      .refreshTokenStatus();
+
                                   Navigator.pushReplacementNamed(
                                       context, Routes.login);
                                 },

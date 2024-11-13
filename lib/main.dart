@@ -48,14 +48,15 @@ Future<void> main() async {
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => ThemeProvider()),
-    ChangeNotifierProvider(create: (_) => TokenProvider()),
     ChangeNotifierProvider(create: (_) => CheckAvailabilityProvider()),
     ChangeNotifierProvider(create: (_) => LanguageProvider()),
     ChangeNotifierProvider(
-      create: (_) => LoginProvider(
-        LoginRepository(
-          LoginServiceImpl(baseUrl),
-        ),
+        create: (_) => TokenProvider()),
+    ChangeNotifierProvider(
+      create: (context) => LoginProvider(
+        LoginRepository(LoginServiceImpl(baseUrl)),
+        context.read<
+            TokenProvider>(),
       ),
     ),
     Provider<RegistrationRepository>(
@@ -104,26 +105,8 @@ Future<void> main() async {
   ], child: const MyApp()));
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  final StorageService storageService = StorageService();
-  Future<bool>? tokenExpiredFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    tokenExpiredFuture = isExpired();
-  }
-
-  Future<bool> isExpired() async {
-    return await storageService.isTokenExpired();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,30 +115,18 @@ class _MyAppState extends State<MyApp> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
 
-    return FutureBuilder<bool>(
-      future: tokenExpiredFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+    return Consumer<TokenProvider>(
+      builder: (context, tokenProvider, child) {
+        if (tokenProvider.isCheckingToken) {
           return const MaterialApp(
             debugShowCheckedModeBanner: false,
             home: Scaffold(
-              body: CircularProgressIndicator(),
-            ),
-          );
-        } else if (snapshot.hasError) {
-          return const MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: Scaffold(
-              body: Center(
-                child: Text(
-                  "Error checking token status",
-                ),
-              ),
+              body: Center(child: CircularProgressIndicator()),
             ),
           );
         } else {
           final initialRoute =
-              snapshot.data == true ? Routes.guest : Routes.homepage;
+              tokenProvider.isTokenExpired ? Routes.guest : Routes.homepage;
 
           return MaterialApp(
             title: 'Rolanda App',

@@ -66,7 +66,7 @@ class _HomepageState extends State<Homepage> {
               color: colors.onSurface,
               width: 30,
             ),
-            title: Text('Home'),
+            title: const Text('Home'),
           ),
           FlashyTabBarItem(
             activeColor: customSwatch,

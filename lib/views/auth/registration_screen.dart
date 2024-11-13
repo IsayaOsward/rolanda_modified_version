@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rolanda_modified_version/providers/login_provider.dart';
 import 'package:rolanda_modified_version/providers/registration_provider.dart';
 import 'package:rolanda_modified_version/reusable_widgets/custom_button.dart';
 import 'package:rolanda_modified_version/reusable_widgets/header.dart';

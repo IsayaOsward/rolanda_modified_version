@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:rolanda_modified_version/model/login_model.dart';
 import 'package:rolanda_modified_version/repository/login_repository.dart';
 import '../exceptions/authentication_exception.dart';
+import 'token_provider.dart';
 
 class LoginProvider with ChangeNotifier {
   final LoginRepository _repository;
-
-  LoginProvider(this._repository);
+  final TokenProvider tokenProvider;
+  LoginProvider(this._repository, this.tokenProvider);
 
   LoginModel? _loginData;
   bool _isLoading = false;
@@ -25,6 +26,7 @@ class LoginProvider with ChangeNotifier {
     try {
       final loginData = await _repository.login(username, password);
       _loginData = loginData;
+      await tokenProvider.refreshTokenStatus();
     } on AuthenticationException catch (e) {
       _errorMessage = e.message;
     } on NetworkException catch (e) {
