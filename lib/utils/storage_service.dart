@@ -34,6 +34,12 @@ class StorageService {
   Future<String?> getUserToken() async {
     return await _storage.read(key: 'access');
   }
+  Future<String?> getUserEmail() async {
+    return await _storage.read(key: 'email');
+  }
+  Future<String?> getUserName() async {
+    return await _storage.read(key: 'username');
+  }
 
   // Method to clear user data during log out
   Future<void> clearUserData() async {

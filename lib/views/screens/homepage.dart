@@ -1,6 +1,8 @@
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 import 'package:rolanda_modified_version/utils/storage_service.dart';
+import 'package:rolanda_modified_version/views/contacts/contact_us.dart';
+import 'package:rolanda_modified_version/views/profile/user_profile.dart';
 import 'package:rolanda_modified_version/views/screens/fetch_booking.dart';
 import 'package:rolanda_modified_version/views/screens/guest_home_pages.dart';
 
@@ -36,8 +38,8 @@ class _HomepageState extends State<Homepage> {
       token != null
           ? ReservationScreen(token: token!)
           : const Center(child: CircularProgressIndicator()),
-      const Center(child: Text("1")),
-      const Center(child: Text("2")),
+      ContactUs(),
+      const ProfileDetails(),
     ];
 
     return Scaffold(

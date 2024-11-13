@@ -25,16 +25,12 @@ class LoginProvider with ChangeNotifier {
     try {
       final loginData = await _repository.login(username, password);
       _loginData = loginData;
-      print(loginData);
     } on AuthenticationException catch (e) {
       _errorMessage = e.message;
-      print(_errorMessage);
     } on NetworkException catch (e) {
       _errorMessage = e.message;
-      print("========================   $_errorMessage");
     } catch (e) {
       _errorMessage = 'An unexpected error occurred';
-      print(e.toString());
     } finally {
       _isLoading = false;
       notifyListeners();

@@ -25,8 +25,13 @@ import 'package:rolanda_modified_version/utils/dimensions.dart';
 import 'package:rolanda_modified_version/utils/preferences_service.dart';
 
 import 'providers/fetch_booking_provider.dart';
+import 'providers/profile_provider.dart';
+import 'providers/token_provider.dart';
 import 'repository/fetch_booking_repository.dart';
 import 'service_impl/fetch_booking_service_impl.dart';
+import 'service_impl/profile_service_impl.dart';
+import 'services/profile_service.dart';
+import 'utils/storage_service.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final preferencesService = PreferencesService();
@@ -38,73 +43,114 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider(create: (_) => CheckAvailabilityProvider()),
-        ChangeNotifierProvider(create: (_) => LanguageProvider()),
-        ChangeNotifierProvider(
-          create: (_) => LoginProvider(
-            LoginRepository(
-              LoginServiceImpl(baseUrl),
-            ),
-          ),
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => ThemeProvider()),
+    ChangeNotifierProvider(create: (_) => TokenProvider()),
+    ChangeNotifierProvider(create: (_) => CheckAvailabilityProvider()),
+    ChangeNotifierProvider(create: (_) => LanguageProvider()),
+    ChangeNotifierProvider(
+      create: (_) => LoginProvider(
+        LoginRepository(
+          LoginServiceImpl(baseUrl),
         ),
-        ChangeNotifierProvider(create: (_) => HotelsProvider()),
-        ChangeNotifierProvider(create: (_) => AddToSelectionProvider()),
-        Provider<BookingService>(create: (_) => BookingServiceImpl()),
-        ChangeNotifierProvider(
-          create: (context) => BookingProvider(
-            Provider.of<BookingService>(context, listen: false),
-          ),
+      ),
+    ),
+    ChangeNotifierProvider(create: (_) => HotelsProvider()),
+    ChangeNotifierProvider(create: (_) => AddToSelectionProvider()),
+    Provider<BookingService>(create: (_) => BookingServiceImpl()),
+    ChangeNotifierProvider(
+      create: (context) => BookingProvider(
+        Provider.of<BookingService>(context, listen: false),
+      ),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => ContactProvider(
+        contactRepository: ContactRepository(
+          contactService: ContactServiceImpl(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => ContactProvider(
-            contactRepository: ContactRepository(
-              contactService: ContactServiceImpl(),
-            ),
-          ),
+      ),
+    ),
+    Provider(
+      create: (_) => ReservationRepository(
+        ReservationServiceImpl(),
+      ),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => ReservationProvider(
+        repository: Provider.of<ReservationRepository>(
+          context,
+          listen: false,
         ),
-        Provider(
-          create: (_) => ReservationRepository(
-            ReservationServiceImpl()  ,
-          ),
+      ),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => ProfileProvider(
+        profileService: ProfileServiceImpl(
+          repository: ProfileRepositoryImpl(),
+          storageService: StorageService(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => ReservationProvider(
-            repository: Provider.of<ReservationRepository>(
-              context,
-              listen: false,
-            ),
-          ),
-        ),
-      ],
-      child: const MyApp(
-        initialRoute: Routes.login,
-      )));
+      ),
+    ),
+  ], child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
-  final String initialRoute;
-  const MyApp({super.key, required this.initialRoute});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final StorageService storageService = StorageService();
+  Future<bool>? tokenExpiredFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    tokenExpiredFuture = isExpired();
+  }
+
+  Future<bool> isExpired() async {
+    return await storageService.isTokenExpired();
+  }
+
   @override
   Widget build(BuildContext context) {
     screenSize = MediaQuery.of(context).size;
     Dimensions.init(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
-    return MaterialApp(
-      title: 'Rolanda App',
-      debugShowCheckedModeBanner: false,
-      navigatorKey: navigatorKey,
-      theme: LightTheme.lightTheme,
-      darkTheme: DarkTheme.darkTheme,
-      themeMode: themeProvider.currentTheme,
-      locale: languageProvider.currentLocale,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      initialRoute: initialRoute,
-      onGenerateRoute: RouteGenerator.generateRoute,
+
+    return FutureBuilder<bool>(
+      future: tokenExpiredFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // While waiting, you can show a loading screen.
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          // Handle any errors here, maybe show an error screen.
+          return Center(child: Text("Error checking token status"));
+        } else {
+          // Determine initial route based on token expiration.
+          final initialRoute =
+              snapshot.data == true ? Routes.guest : Routes.homepage;
+
+          return MaterialApp(
+            title: 'Rolanda App',
+            debugShowCheckedModeBanner: false,
+            navigatorKey: navigatorKey,
+            theme: LightTheme.lightTheme,
+            darkTheme: DarkTheme.darkTheme,
+            themeMode: themeProvider.currentTheme,
+            locale: languageProvider.currentLocale,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            initialRoute: initialRoute,
+            onGenerateRoute: RouteGenerator.generateRoute,
+          );
+        }
+      },
     );
   }
 }

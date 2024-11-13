@@ -5,7 +5,6 @@ String convertToYyyyMmDd(String date) {
     DateTime parsedDate = DateFormat('dd/MM/yyyy').parse(date);
     return DateFormat('yyyy-MM-dd').format(parsedDate);
   } catch (e) {
-    print('Error parsing date: $e');
     return '';
   }
 }
