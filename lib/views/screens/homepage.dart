@@ -1,5 +1,6 @@
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
+import 'package:rolanda_modified_version/config/theme/custom_swatch.dart';
 import 'package:rolanda_modified_version/utils/storage_service.dart';
 import 'package:rolanda_modified_version/views/contacts/contact_us.dart';
 import 'package:rolanda_modified_version/views/profile/user_profile.dart';
@@ -33,6 +34,7 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     List<Widget> tabItems = [
       const GuestHomePages(),
       token != null
@@ -43,10 +45,12 @@ class _HomepageState extends State<Homepage> {
     ];
 
     return Scaffold(
+      backgroundColor: colors.surface,
       body: Center(
         child: tabItems[_selectedIndex],
       ),
       bottomNavigationBar: FlashyTabBar(
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
         animationCurve: Curves.linear,
         selectedIndex: _selectedIndex,
         iconSize: 30,
@@ -56,33 +60,37 @@ class _HomepageState extends State<Homepage> {
         }),
         items: [
           FlashyTabBarItem(
+            activeColor: customSwatch,
             icon: Image.asset(
               "assets/images/home.png",
-              color: const Color(0xff9496c1),
+              color: colors.onSurface,
               width: 30,
             ),
-            title: const Text('Home'),
+            title: Text('Home'),
           ),
           FlashyTabBarItem(
+            activeColor: customSwatch,
             icon: Image.asset(
               "assets/images/calender.png",
-              color: const Color(0xff9496c1),
+              color: colors.onSurface,
               width: 30,
             ),
             title: const Text('Bookings'),
           ),
           FlashyTabBarItem(
+            activeColor: customSwatch,
             icon: Image.asset(
               "assets/images/about.png",
-              color: const Color(0xff9496c1),
+              color: colors.onSurface,
               width: 30,
             ),
             title: const Text('Contact Us'),
           ),
           FlashyTabBarItem(
+            activeColor: customSwatch,
             icon: Image.asset(
               "assets/images/user.png",
-              color: const Color(0xff9496c1),
+              color: colors.onSurface,
               width: 30,
             ),
             title: const Text('Profile'),

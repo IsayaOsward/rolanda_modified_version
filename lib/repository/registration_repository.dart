@@ -1,5 +1,3 @@
-
-
 import 'package:rolanda_modified_version/model/user_registration_model.dart';
 import 'package:rolanda_modified_version/services/registration_services.dart';
 

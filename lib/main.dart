@@ -26,10 +26,13 @@ import 'package:rolanda_modified_version/utils/preferences_service.dart';
 
 import 'providers/fetch_booking_provider.dart';
 import 'providers/profile_provider.dart';
+import 'providers/registration_provider.dart';
 import 'providers/token_provider.dart';
 import 'repository/fetch_booking_repository.dart';
+import 'repository/registration_repository.dart';
 import 'service_impl/fetch_booking_service_impl.dart';
 import 'service_impl/profile_service_impl.dart';
+import 'service_impl/registration_service_impl.dart';
 import 'services/profile_service.dart';
 import 'utils/storage_service.dart';
 
@@ -55,6 +58,13 @@ Future<void> main() async {
         ),
       ),
     ),
+    Provider<RegistrationRepository>(
+      create: (_) => RegistrationRepository(RegistrationServiceImpl()),
+    ),
+    ChangeNotifierProvider<RegistrationProvider>(
+        create: (context) => RegistrationProvider(
+            registrationRepository:
+                Provider.of<RegistrationRepository>(context, listen: false))),
     ChangeNotifierProvider(create: (_) => HotelsProvider()),
     ChangeNotifierProvider(create: (_) => AddToSelectionProvider()),
     Provider<BookingService>(create: (_) => BookingServiceImpl()),
@@ -91,7 +101,7 @@ Future<void> main() async {
         ),
       ),
     ),
-  ], child: MyApp()));
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -126,13 +136,24 @@ class _MyAppState extends State<MyApp> {
       future: tokenExpiredFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // While waiting, you can show a loading screen.
-          return CircularProgressIndicator();
+          return const MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: Scaffold(
+              body: CircularProgressIndicator(),
+            ),
+          );
         } else if (snapshot.hasError) {
-          // Handle any errors here, maybe show an error screen.
-          return Center(child: Text("Error checking token status"));
+          return const MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: Scaffold(
+              body: Center(
+                child: Text(
+                  "Error checking token status",
+                ),
+              ),
+            ),
+          );
         } else {
-          // Determine initial route based on token expiration.
           final initialRoute =
               snapshot.data == true ? Routes.guest : Routes.homepage;
 

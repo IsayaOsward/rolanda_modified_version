@@ -58,7 +58,7 @@ class CheckAvailabilityProvider with ChangeNotifier {
         _bookingResponse = jsonDecode(response.body);
       }
     } catch (error) {
-      _error = 'Error occurred: $error';
+      _error = 'Error occurred';
     } finally {
       _isLoading = false;
       notifyListeners();

@@ -8,16 +8,24 @@ import 'package:rolanda_modified_version/services/registration_services.dart';
 class RegistrationServiceImpl implements RegistrationService {
   @override
   Future<bool> registerUser(UserRegistration user) async {
-    const url = '$baseUrl/auth/register';
+    const url = '$baseUrl/user/api/register/';
 
-    
+    final registerUser = {
+      "username" : user.email,
+      "full_name" : "${user.firstName} ${user.lastName}",
+      "phone": user.phoneNumber,
+      "email": user.email,
+      "password1": user.password,
+      "password2": user.confirmPassword
+    };
+
     final response = await http.post(
       Uri.parse(url),
-      body: jsonEncode(user.toJson()),
+      body: jsonEncode(registerUser),
       headers: {
         'Content-Type': 'application/json',
       },
     );
-    return response.statusCode == 200;
+    return response.statusCode == 201;
   }
 }

@@ -1,7 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rolanda_modified_version/config/base_url.dart';
+import 'package:rolanda_modified_version/config/theme/custom_swatch.dart';
+import 'package:rolanda_modified_version/utils/dimensions.dart';
 import '../../providers/profile_provider.dart';
+import '../../providers/theme_provider.dart';
+import '../../routes/routes.dart';
 
 class ProfileDetails extends StatefulWidget {
   const ProfileDetails({super.key});
@@ -22,12 +27,19 @@ class _ProfileDetailsState extends State<ProfileDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).colorScheme;
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final colorTheme = Theme.of(context).colorScheme;
     bool value = false;
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: theme.surfaceContainerLowest,
+        backgroundColor: colorTheme.surface,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          centerTitle: false,
+          title: const Text("Profile"),
+          automaticallyImplyLeading: false,
+        ),
         body: Consumer<ProfileProvider>(
           builder: (context, provider, child) {
             if (provider.isLoading) {
@@ -35,7 +47,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             }
 
             if (provider.errorMessage.isNotEmpty) {
-              return Center(child: Text('Error: ${provider.errorMessage}'));
+              return const Center(child: Text('Sorry!: We are unable to fetch your profile'));
             }
 
             final profile = provider.profile;
@@ -47,44 +59,191 @@ class _ProfileDetailsState extends State<ProfileDetails> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFCA6F),
-                        borderRadius: BorderRadius.circular(30),
+                    CircleAvatar(
+                      radius: 90,
+                      backgroundColor: customSwatch,
+                      child: CircleAvatar(
+                        radius: 88,
+                        backgroundImage:
+                            NetworkImage("$baseUrl${profile.image!}"),
                       ),
-                      child: Row(
+                    ),
+                    SizedBox(
+                      height: Dimensions.height10,
+                    ),
+                    Text(
+                      profile.fullName!,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const Divider(
+                      thickness: 0.3,
+                    ),
+                    Container(
+                      width: Dimensions.screenWidth,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Dimensions.width20,
+                          vertical: Dimensions.height10),
+                      decoration: BoxDecoration(
+                        color: colorTheme.surfaceContainerLow,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          GestureDetector(
-                            onTap: () => () {},
-                            child: CircleAvatar(
-                              radius: 50,
-                              backgroundImage: NetworkImage("$baseUrl${profile.image!}"),
+                          ListTile(
+                            onTap: null,
+                            leading: Container(
+                              padding: const EdgeInsets.all(7),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              child: const Icon(
+                                Icons.mail_outline,
+                                color: customSwatch,
+                              ),
+                            ),
+                            title: Text(
+                              profile.email!,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  profile.fullName!,
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  profile.email!,
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ],
+                          ListTile(
+                            onTap: null,
+                            leading: Container(
+                              padding: const EdgeInsets.all(7),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              child: const Icon(
+                                Icons.phone_outlined,
+                                color: customSwatch,
+                              ),
                             ),
+                            title: Text(
+                              profile.phone!,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          ListTile(
+                            onTap: null,
+                            leading: Container(
+                              padding: const EdgeInsets.all(7),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              child: const Icon(
+                                Icons.location_city_outlined,
+                                color: customSwatch,
+                              ),
+                            ),
+                            title: Text(
+                              profile.city!,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          ListTile(
+                            onTap: null,
+                            leading: Container(
+                              padding: const EdgeInsets.all(7),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              child: const Icon(
+                                Icons.location_pin,
+                                color: customSwatch,
+                              ),
+                            ),
+                            title: Text(
+                              profile.country!,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          ListTile(
+                            onTap: null,
+                            leading: Container(
+                              padding: const EdgeInsets.all(7),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              child: const Icon(
+                                Icons.female_outlined,
+                                color: customSwatch,
+                              ),
+                            ),
+                            title: Text(
+                              profile.gender!,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          const Divider(),
+                          SizedBox(height: Dimensions.height10,),
+                          Column(
+                            children: [
+                              ListTile(
+                                onTap: () {},
+                                leading: Container(
+                                  padding: const EdgeInsets.all(7),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(7),
+                                  ),
+                                  child: const Icon(
+                                    Icons.brightness_6,
+                                    color:
+                                        customSwatch,
+                                  ),
+                                ),
+                                title: const Text(
+                                  "Change theme",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                trailing: CupertinoSwitch(
+                                  value: themeProvider.isDarkMode,
+                                  onChanged: (value) {
+                                    themeProvider.toggleTheme(value);
+                                  },
+                                ),
+                              ),
+                              ListTile(
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(
+                                      context, Routes.login);
+                                },
+                                leading: Container(
+                                  padding: const EdgeInsets.all(7),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red[100],
+                                    borderRadius: BorderRadius.circular(7),
+                                  ),
+                                  child: const Icon(
+                                    Icons.logout,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                title: const Text(
+                                  "Sign Out",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    // More UI elements here...
+                    )
                   ],
                 ),
               ),
@@ -95,9 +254,9 @@ class _ProfileDetailsState extends State<ProfileDetails> {
     );
   }
 
-  // toggleSwitch(value) {
-  //   setState(() {
-  //     value = !value;
-  //   });
-  // }
+  toggleSwitch(value) {
+    // setState(() {
+    //   value = !value;
+    // });
+  }
 }

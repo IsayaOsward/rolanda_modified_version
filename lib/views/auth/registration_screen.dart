@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rolanda_modified_version/providers/login_provider.dart';
+import 'package:rolanda_modified_version/providers/registration_provider.dart';
 import 'package:rolanda_modified_version/reusable_widgets/custom_button.dart';
 import 'package:rolanda_modified_version/reusable_widgets/header.dart';
 import 'package:rolanda_modified_version/reusable_widgets/textfield_widget.dart';
 import 'package:rolanda_modified_version/routes/routes.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
 import 'package:rolanda_modified_version/utils/inputs_validation.dart';
+
+import '../../model/user_registration_model.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -28,7 +31,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<LoginProvider>(context);
+    final authProvider = Provider.of<RegistrationProvider>(context);
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -136,33 +139,39 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       CustomButton(
                         text: "Register",
                         isLoading: authProvider.isLoading,
-                        onPressed: authProvider.isLoading
-                            ? () {}
-                            : () async {
-                                if (formKey.currentState!.validate()) {
-                                  final provider = Provider.of<LoginProvider>(
-                                      context,
-                                      listen: false);
-                                  await provider.login(
-                                    emailController.text,
-                                    passwordController.text,
-                                  );
+                        onPressed: () async {
+                          if (formKey.currentState!.validate()) {
+                            final registrationProvider =
+                                Provider.of<RegistrationProvider>(context,
+                                    listen: false);
 
-                                  if (provider.errorMessage != null) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content:
-                                              Text(provider.errorMessage!)),
-                                    );
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content:
-                                              Text("Registered Successful!")),
-                                    );
-                                  }
-                                }
-                              },
+                            final user = UserRegistration(
+                              firstName: firstnameController.text,
+                              lastName: lastnameController.text,
+                              email: emailController.text,
+                              phoneNumber: phoneNumberController.text,
+                              password: passwordController.text,
+                              confirmPassword: confirmPasswordController.text,
+                            );
+
+                            final isSuccess =
+                                await registrationProvider.registerUser(user);
+
+                            if (isSuccess) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Registered Successfully!")),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text(
+                                        registrationProvider.errorMessage ??
+                                            "Registration failed")),
+                              );
+                            }
+                          }
+                        },
                       ),
                       SizedBox(height: Dimensions.height10),
                       Row(

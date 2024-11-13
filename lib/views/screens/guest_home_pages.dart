@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rolanda_modified_version/config/base_url.dart';
+import 'package:rolanda_modified_version/config/theme/custom_swatch.dart';
 import 'package:rolanda_modified_version/providers/hotels_provider.dart';
 import 'package:rolanda_modified_version/utils/constants/colors.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
@@ -49,17 +50,15 @@ class _GuestHomePagesState extends State<GuestHomePages> {
     }
 
     // Start a new debounce timer
-    _debounce = Timer(const Duration(seconds: 1), () {
+    _debounce = Timer(const Duration(milliseconds: 300), () {
       if (query.isEmpty) {
-        // If the search query is empty, fetch all results
-        _fetchAllResults(); // Fetch all hotels
+        _fetchAllResults();
       } else {
-        _performSearch(query); // Call the search function with category
+        _performSearch(query);
       }
     });
   }
 
-// Function to perform the actual search with category
   void _performSearch(String query) {
     final provider = Provider.of<HotelsProvider>(context, listen: false);
     String selectedCategory =
@@ -85,12 +84,16 @@ class _GuestHomePagesState extends State<GuestHomePages> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colors.surface,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
-        title: const Text("Rolanda"),
+        backgroundColor: colors.surface,
+        surfaceTintColor: colors.surface,
+        title: Text(
+          "Rolanda",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -110,11 +113,13 @@ class _GuestHomePagesState extends State<GuestHomePages> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Discover your",
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    const Text(
+                    Text(
                       "perfect place to stay",
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                     SizedBox(
                       height: Dimensions.height20,
@@ -135,7 +140,8 @@ class _GuestHomePagesState extends State<GuestHomePages> {
                               decoration: InputDecoration(
                                 hintText: "Search hotel ...",
                                 filled: true,
-                                fillColor: AppColor.greyInputFill,
+                                fillColor:
+                                    colors.inverseSurface.withOpacity(0.1),
                                 prefixIcon: Image.asset(ImageAssets.searchIcon),
                                 suffixIcon: Padding(
                                   padding: const EdgeInsets.all(2.0),
@@ -177,11 +183,9 @@ class _GuestHomePagesState extends State<GuestHomePages> {
                                 errorText: formFieldState
                                     .errorText, // Automatically displays error
                               ),
-                              // Call validate() on submit to trigger the validator method
                               onFieldSubmitted: (value) {
                                 if (formFieldState.validate()) {
-                                  // If input is valid, proceed with search
-                                  // performSearch(_searchController.text);
+                                  _onSearchChanged(_searchController.text);
                                 }
                               },
                             ),
@@ -190,7 +194,7 @@ class _GuestHomePagesState extends State<GuestHomePages> {
                               child: DropdownButton<String>(
                                 padding: const EdgeInsets.all(0),
                                 // dropdownColor: Colors.white,
-                                // value: _categories[_currentCategory],
+                                value: _categories[_currentCategory],
                                 icon: const Icon(
                                   Icons.filter_list_outlined,
                                   color: Colors.transparent,
@@ -252,11 +256,12 @@ class _GuestHomePagesState extends State<GuestHomePages> {
                                 ),
                                 duration: const Duration(milliseconds: 300),
                                 margin: EdgeInsets.symmetric(
-                                    horizontal: Dimensions.width10),
+                                  horizontal: Dimensions.width10,
+                                ),
                                 decoration: BoxDecoration(
                                   color: index == _currentCategory
-                                      ? AppColor.yellowColor
-                                      : AppColor.paleGreyColor,
+                                      ? customSwatch
+                                      : AppColor.paleGreyColor.withOpacity(0.9),
                                   borderRadius: BorderRadius.circular(
                                       Dimensions.radius20 +
                                           Dimensions.radius10),
@@ -299,30 +304,116 @@ class _GuestHomePagesState extends State<GuestHomePages> {
                     SizedBox(height: Dimensions.height5),
                     SizedBox(
                       height: 134,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 10,
-                        itemBuilder: (_, __) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              width: Dimensions.width400,
-                              height: Dimensions.height180,
-                              margin: EdgeInsets.symmetric(
-                                horizontal: Dimensions.width10,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(
-                                  Dimensions.radius10,
+                      child: provider.isLoading
+                          ? ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 10,
+                              itemBuilder: (_, __) => Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    width: Dimensions.width400,
+                                    height: Dimensions.height180,
+                                    margin: EdgeInsets.symmetric(
+                                      horizontal: Dimensions.width10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(
+                                        Dimensions.radius10,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
+                            )
+                          : ListView.builder(
+                              scrollDirection:
+                                  Axis.horizontal, // Set horizontal scrolling
+                              itemCount: provider.hotels.length,
+                              itemBuilder: (context, index) {
+                                String extractImageUrl(String thumbnailHtml) {
+                                  final RegExp regExp =
+                                      RegExp(r'src="([^"]+)"');
+                                  final match =
+                                      regExp.firstMatch(thumbnailHtml);
+                                  if (match != null) {
+                                    return match.group(
+                                        1)!; // Return the URL found in the 'src' attribute
+                                  }
+                                  return ''; // Return an empty string if no match is found
+                                }
+
+                                final hotel = provider.hotels[index];
+                                final thumbnailUrl =
+                                    extractImageUrl(hotel.thumbnail);
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ApartmentDetails(
+                                          imageUrl: thumbnailUrl,
+                                          hotels: hotel,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: SizedBox(
+                                      width:
+                                          200, // Define width for each hotel item
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                            Dimensions.radius10),
+                                        child: Stack(
+                                          children: [
+                                            // Display the hotel image
+                                            Image.network(
+                                              '$baseUrl/$thumbnailUrl',
+                                              fit: BoxFit.cover,
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                            ),
+                                            // Overlay the hotel title at the bottom left
+                                            Positioned(
+                                              bottom: 8,
+                                              left: 8,
+                                              child: Container(
+                                                color: Colors
+                                                    .black54, // Semi-transparent background for readability
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 8,
+                                                  vertical: 4,
+                                                ),
+                                                child: Text(
+                                                  hotel.name,
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                          ),
-                        ),
-                      ),
                     ),
                     SizedBox(height: Dimensions.height5),
                     const Text("Others"),
@@ -491,7 +582,7 @@ class _GuestHomePagesState extends State<GuestHomePages> {
                                                   hotel.name,
                                                   style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
-                                                    color: Colors.black,
+                                                    // color: Colors.black,
                                                   ),
                                                   overflow: TextOverflow
                                                       .ellipsis, // Handle overflow for hotel name

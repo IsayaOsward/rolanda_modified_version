@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:rolanda_modified_version/config/theme/custom_swatch.dart';
 import 'package:rolanda_modified_version/providers/check_availability_provider.dart';
 import 'package:rolanda_modified_version/views/screens/availability_results.dart';
 
@@ -41,7 +44,7 @@ class _BookingDialogState extends State<BookingDialog> {
 
     if (_selectedCategory == "" ||
         numberOfAdults < 1 ||
-        numberOfAdults > 2 ||
+        numberOfAdults > 3 ||
         numberOfChildren < 0 ||
         numberOfChildren > 4) {
       return false;
@@ -51,7 +54,7 @@ class _BookingDialogState extends State<BookingDialog> {
 
   @override
   void initState() {
-    _selectedCategory = (widget.hotel.roomTypes[0].type);
+    _selectedCategory = (widget.hotel.roomTypes[0].slug);
     super.initState();
   }
 
@@ -60,7 +63,7 @@ class _BookingDialogState extends State<BookingDialog> {
     final checkAvailabilityProvider =
         Provider.of<CheckAvailabilityProvider>(context);
     for (var i = 0; i < widget.hotel.roomTypes.length; i++) {
-      categories.add(widget.hotel.roomTypes[i].type);
+      categories.add(widget.hotel.roomTypes[i].slug);
     }
     categories.toList();
 
@@ -86,6 +89,9 @@ class _BookingDialogState extends State<BookingDialog> {
                 // Category Dropdown
                 DropdownButtonFormField<String>(
                   value: _selectedCategory,
+                  decoration: const InputDecoration(border: OutlineInputBorder(
+                    borderSide: BorderSide(color: customSwatch)
+                  )),
                   hint: const Text('Select Category'),
                   onChanged: (value) {
                     setState(() {
@@ -97,7 +103,7 @@ class _BookingDialogState extends State<BookingDialog> {
                       value: category,
                       child: Text(
                         category,
-                        style: const TextStyle(color: Colors.black),
+                        style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                       ),
                     );
                   }).toList(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rolanda_modified_version/config/theme/custom_swatch.dart';
 
 class AboutUs extends StatelessWidget {
   const AboutUs({super.key});
@@ -12,6 +13,8 @@ class AboutUs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         title: const Text(
           "About Us",
         ),
@@ -33,31 +36,27 @@ class AboutUs extends StatelessWidget {
                     RichText(
                       text: TextSpan(
                         children: [
-                          normalSpan('Welcome at '),
-                          const TextSpan(
+                          normalSpan(context,'Welcome at '),
+                          TextSpan(
                             text: 'Rolanda \n',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context).textTheme.titleLarge,
                           ),
-                          normalSpan('At '),
-                          const TextSpan(
+                          normalSpan(context,'At '),
+                          TextSpan(
                             text: 'Rolanda, ',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 18),
                           ),
                           normalSpan(
-                            ' we strive to make sure your accommodation booking experience is enjoyable whether you\'re looking for a hotel, lodge, or apartment. Our app provides you with a comprehensive and user-friendly platform to find and book your ideal stay. ',
+                            context,' we strive to make sure your accommodation booking experience is enjoyable whether you\'re looking for a hotel, lodge, or apartment. Our app provides you with a comprehensive and user-friendly platform to find and book your ideal stay. ',
                           ),
-                          headerSpan("Our Mission"),
-                          normalSpan(
+                          headerSpan(context, "Our Mission"),
+                          normalSpan(context,
                             "Our mission is to connect travelers with the best accommodation options while ensuring a smooth and secure booking process. Our mission is to connect travelers with the best accommodation options while ensuring a smooth and secure booking process. Our mission is to connect travelers with the best accommodation options while ensuring a smooth and secure booking process.",
                           ),
-                          headerSpan("What We Offer"),
-                          _buildBulletPoint("Wide Selection"),
-                          _buildBulletPoint("Easy Booking."),
-                          _buildBulletPoint("Secure Payments"),
+                          headerSpan(context,"What We Offer"),
+                          _buildBulletPoint(context, "Wide Selection"),
+                          _buildBulletPoint(context,"Easy Booking."),
+                          _buildBulletPoint(context, "Secure Payments"),
                         ],
                       ),
                     ),
@@ -107,7 +106,7 @@ class AboutUs extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20), // Add spacing before the button
+                     const SizedBox(height: 20), // Add spacing before the button
                   ],
                 ),
               ),
@@ -125,13 +124,13 @@ class AboutUs extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  // backgroundColor: WidgetStateProperty.all(primaryBlue),
-                  // foregroundColor: WidgetStateProperty.all(whiteColor),
+                  backgroundColor: WidgetStateProperty.all(customSwatch),
+                  foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onPrimary),
                 ),
                 onPressed: () => _toBackPage(context),
-                child: Text(
+                child: const Text(
                   "Go back",
-                  style: GoogleFonts.poppins(),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
@@ -147,7 +146,6 @@ class AboutUs extends StatelessWidget {
       children: [
         Icon(
           icon,
-          // color: primaryBlue,
         ),
         const SizedBox(
           width: 10,
@@ -157,27 +155,24 @@ class AboutUs extends StatelessWidget {
     );
   }
 
-  TextSpan headerSpan(String text) {
+  TextSpan headerSpan(context, String text) {
     return TextSpan(
       text: "\n\n$text\n",
-      style: const TextStyle(
-        // color: darkBlue,
-        fontWeight: FontWeight.bold,
-        fontSize: 18,
-      ),
+      style: Theme.of(context).textTheme.titleLarge,
     );
   }
 
-  TextSpan normalSpan(String text) {
+  TextSpan normalSpan(context, String text) {
     return TextSpan(
       text: text,
+      style: Theme.of(context).textTheme.bodyMedium
     );
   }
 
-  TextSpan _buildBulletPoint(String text) {
+  TextSpan _buildBulletPoint(context, String text) {
     return TextSpan(
       children: [
-        const WidgetSpan(
+         const WidgetSpan(
           child: Text(
             '   • ',
             style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900),
@@ -185,6 +180,7 @@ class AboutUs extends StatelessWidget {
         ),
         TextSpan(
           text: '$text\n',
+          style: Theme.of(context).textTheme.bodyMedium
         ),
       ],
     );

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'dart:convert';
-import 'package:rolanda_modified_version/config/base_url.dart';
+import 'package:rolanda_modified_version/config/theme/custom_swatch.dart';
 import 'package:rolanda_modified_version/model/contact_model.dart';
 import 'package:rolanda_modified_version/providers/contact_provider.dart';
 import 'package:rolanda_modified_version/reusable_widgets/textfield_widget.dart';
+import 'package:rolanda_modified_version/utils/dimensions.dart';
 import 'package:rolanda_modified_version/utils/inputs_validation.dart';
 import 'package:rolanda_modified_version/views/contacts/about_us.dart';
 
@@ -28,19 +27,17 @@ class ContactUs extends StatelessWidget {
     return SingleChildScrollView(
       child: Consumer<ContactProvider>(builder: (context, provider, child) {
         return Container(
+          color: Theme.of(context).colorScheme.surface,
           margin: const EdgeInsets.only(left: 25, right: 25, top: 66),
           alignment: Alignment.topCenter,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 "Contact us now",
-                style: GoogleFonts.poppins(
-                  // color: darkBlue,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: Dimensions.height15),
               // Full Name Field
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,13 +48,17 @@ class ContactUs extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   SizedBox(
-                      height: 50,
-                      child: CustomTextFormField(
-                          controller: fullNameController,
-                          label: "Full name",
-                          prefixIcon: Icon(Icons.person),
-                          validator: (value) =>
-                              Validator.validateName(fullNameController.text, context,),),),
+                    height: 50,
+                    child: CustomTextFormField(
+                      controller: fullNameController,
+                      label: "Full name",
+                      prefixIcon: const Icon(Icons.person),
+                      validator: (value) => Validator.validateName(
+                        fullNameController.text,
+                        context,
+                      ),
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 20),
@@ -96,7 +97,6 @@ class ContactUs extends StatelessWidget {
                 children: [
                   const Text(
                     "Phone Number",
-                    // style: GoogleFonts.poppins(color: darkBlue),
                   ),
                   const SizedBox(height: 8),
                   SizedBox(
@@ -106,12 +106,9 @@ class ContactUs extends StatelessWidget {
                       style: GoogleFonts.poppins(),
                       decoration: const InputDecoration(
                         hintText: "Your Phone Number",
-                        // hintStyle: GoogleFonts.poppins(color: mediumGray),
                         focusedBorder: OutlineInputBorder(
-                            // borderSide: BorderSide(color: primaryBlue, width: 2),
                             ),
                         border: OutlineInputBorder(
-                            // borderSide: BorderSide(color: mediumGray),
                             ),
                       ),
                     ),
@@ -125,7 +122,6 @@ class ContactUs extends StatelessWidget {
                 children: [
                   const Text(
                     "Address",
-                    // style: GoogleFonts.poppins(color: darkBlue),
                   ),
                   const SizedBox(height: 8),
                   SizedBox(
@@ -135,12 +131,9 @@ class ContactUs extends StatelessWidget {
                       style: GoogleFonts.poppins(),
                       decoration: const InputDecoration(
                         hintText: "Your Address",
-                        // hintStyle: GoogleFonts.poppins(color: mediumGray),
                         focusedBorder: OutlineInputBorder(
-                            // borderSide: BorderSide(color: primaryBlue, width: 2),
                             ),
                         border: OutlineInputBorder(
-                            // borderSide: BorderSide(color: mediumGray),
                             ),
                       ),
                     ),
@@ -148,43 +141,42 @@ class ContactUs extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              // Message Field
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     "Your Message",
-                    // style: GoogleFonts.poppins(color: darkBlue),
                   ),
                   const SizedBox(height: 8),
                   SizedBox(
-                    height: 300,
+                    height: Dimensions.height280,
                     child: TextField(
                       controller: messageController,
                       style: GoogleFonts.poppins(),
-                      maxLines: 10,
+                      maxLines: 8,
                       maxLength: 500,
                       decoration: const InputDecoration(
                         hintText: "Leave your message here",
-                        // hintStyle: GoogleFonts.poppins(color: mediumGray),
                         focusedBorder: OutlineInputBorder(
-                            // borderSide: BorderSide(color: primaryBlue, width: 2),
                             ),
                         border: OutlineInputBorder(
-                            // borderSide: BorderSide(color: mediumGray),
                             ),
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-              // Submit Button
               SizedBox(
                 height: 45,
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ButtonStyle(
+                    backgroundColor: const WidgetStatePropertyAll(
+                      customSwatch,
+                    ),
+                    foregroundColor: WidgetStatePropertyAll(
+                      Theme.of(context).colorScheme.onSurface,
+                    ),
                     shape: WidgetStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     )),
@@ -198,13 +190,13 @@ class ContactUs extends StatelessWidget {
                       address: addressController.text,
                       message: messageController.text,
                     );
-
-                    print(messageController.text);
                     provider.submitContactForm(contact, context);
                   },
                   child: Text(
                     "Send Message",
-                    style: GoogleFonts.poppins(),
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Colors.white,
+                        ),
                   ),
                 ),
               ),
@@ -212,13 +204,8 @@ class ContactUs extends StatelessWidget {
               // About Us Link
               GestureDetector(
                 onTap: () => _toAboutPage(context),
-                child: Text(
+                child: const Text(
                   "See all about us",
-                  style: GoogleFonts.poppins(
-                    // color: primaryBlue,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.none,
-                  ),
                 ),
               ),
               const SizedBox(height: 20),

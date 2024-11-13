@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rolanda_modified_version/providers/add_to_selection_provider.dart';
 import 'package:rolanda_modified_version/providers/booking_provider.dart';
+import 'package:rolanda_modified_version/routes/routes.dart';
 import 'package:rolanda_modified_version/utils/calculates_nights_difference.dart';
 import 'package:rolanda_modified_version/utils/date_converter.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
@@ -68,8 +71,8 @@ class AvailabilityResults extends StatelessWidget {
                 child: const Text("Close"),
               ),
               TextButton(
-                onPressed: () {
-                  confirmBooking.confirmBooking(
+                onPressed: () async {
+                  bool response = await confirmBooking.confirmBooking(
                       hotelID,
                       convertToYyyyMmDd(checkInDate),
                       convertToYyyyMmDd(checkOutDate),
@@ -77,6 +80,35 @@ class AvailabilityResults extends StatelessWidget {
                       children,
                       resultData['room_type'],
                       roomId);
+                  if (response) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.green,
+                        content: Text(
+                          "Booking placed successful!",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    );
+                    Navigator.pushReplacementNamed(
+                      context,
+                      Routes.homepage,
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Theme.of(context).colorScheme.error,
+                        content: Text(
+                          "Sorry, failed to place your booking!",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onError,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
                   Navigator.pop(context);
                 },
                 child: const Text("Confirm Booking"),
@@ -90,11 +122,13 @@ class AvailabilityResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    // final texts = Theme.of(context).textTheme;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colors.surface,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
+        backgroundColor: colors.surface,
+        surfaceTintColor: colors.surface,
         title: const Text('Available Rooms'),
       ),
       body: Consumer<AddToSelectionProvider>(

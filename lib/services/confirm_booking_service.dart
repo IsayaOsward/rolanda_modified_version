@@ -1,5 +1,5 @@
 abstract class BookingService {
-  Future<void> confirmBooking(
+  Future<bool> confirmBooking(
     int hotelId,
     String checkIn,
     String checkOut,

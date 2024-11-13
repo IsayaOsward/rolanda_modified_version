@@ -12,7 +12,7 @@ class BookingProvider with ChangeNotifier {
   BookingProvider(this._bookingService);
 
   // This method will be called when confirming the booking
-  Future<void> confirmBooking(
+  Future<bool> confirmBooking(
     int hotelId,
     String checkIn,
     String checkOut,
@@ -23,7 +23,7 @@ class BookingProvider with ChangeNotifier {
   ) async {
     _setLoading(true);
     try {
-      await _bookingService.confirmBooking(
+      bool response = await _bookingService.confirmBooking(
         hotelId,
         checkIn,
         checkOut,
@@ -32,6 +32,13 @@ class BookingProvider with ChangeNotifier {
         roomType,
         roomId,
       );
+
+      if (response) {
+        return true;
+      }
+      else{
+        return false;
+      }
     } finally {
       _setLoading(false);
     }
