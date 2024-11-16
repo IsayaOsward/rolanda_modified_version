@@ -11,7 +11,7 @@ class ContactProvider with ChangeNotifier {
 
   ContactProvider({required this.contactRepository});
 
-  Future<void> submitContactForm(
+  Future<bool> submitContactForm(
       ContactModel contact, BuildContext context) async {
     isLoading = true;
     notifyListeners();
@@ -23,9 +23,11 @@ class ContactProvider with ChangeNotifier {
     if (isSuccess) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Message sent successfully!')));
+          return isSuccess;
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to send message.')));
+          return isSuccess;
     }
   }
 }

@@ -1,4 +1,4 @@
-class Profile {
+class ProfileModel {
   final String? image;
   final String? fullName;
   final String? phone;
@@ -13,7 +13,7 @@ class Profile {
   final String? twitter;
   final String? email;
 
-  Profile({
+  ProfileModel({
     this.image,
     this.fullName,
     this.phone,
@@ -29,8 +29,8 @@ class Profile {
     this.email,
   });
 
-  factory Profile.fromJson(Map<String, dynamic> json) {
-    return Profile(
+  factory ProfileModel.fromJson(Map<String, dynamic> json) {
+    return ProfileModel(
       image: json['image'],
       fullName: json['full_name'],
       phone: json['phone'],

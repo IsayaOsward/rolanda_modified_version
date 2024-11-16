@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:developer' as developer;
 import 'package:http/http.dart' as http;
 import 'package:rolanda_modified_version/config/base_url.dart';
 import 'package:rolanda_modified_version/model/user_registration_model.dart';
@@ -26,6 +26,7 @@ class RegistrationServiceImpl implements RegistrationService {
         'Content-Type': 'application/json',
       },
     );
+    developer.log(response.body);
     return response.statusCode == 201;
   }
 }

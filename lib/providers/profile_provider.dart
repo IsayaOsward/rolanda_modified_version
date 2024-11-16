@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../model/profile.dart';
+import '../model/profile_model.dart';
 import '../services/profile_service.dart';
 
 class ProfileProvider extends ChangeNotifier {
   final ProfileService profileService;
-  Profile? _profile;
+  ProfileModel? _profile;
   bool _isLoading = true;
   String _errorMessage = '';
 
-  Profile? get profile => _profile;
+  ProfileModel? get profile => _profile;
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 

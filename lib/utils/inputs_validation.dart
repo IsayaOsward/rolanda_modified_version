@@ -90,6 +90,7 @@ class Validator {
     return null;
   }
 
+
   // Phone number validation (must start with 0 and be exactly 10 digits)
 static String? validatePhoneNumber(String? phoneNumber, BuildContext context) {
   if (phoneNumber == null || phoneNumber.isEmpty) {
@@ -120,4 +121,33 @@ static String? validatePhoneNumber(String? phoneNumber, BuildContext context) {
     }
     return null;
   }
+
+
+static String? validateAddress(String? address,BuildContext context) {
+  if (address == null || address.isEmpty) {
+    return "This field is required";
+  }
+  // Address can contain letters, numbers, spaces, and common address symbols
+  String addressPattern = r'^[a-zA-Z0-9\s,.-]+$';
+  RegExp regex = RegExp(addressPattern);
+  if (!regex.hasMatch(address)) {
+    return "Invalid address format";
+  }
+  return null;
+}
+
+static String? validateTextOrMessage(String? text, BuildContext context) {
+  if (text == null || text.isEmpty) {
+    return "This field is required";
+  }
+  // Text can contain alphanumeric characters, spaces, and common punctuation
+  String textPattern =r"""^[a-zA-Z0-9\s.,?!\'"-]+$""";
+  RegExp regex = RegExp(textPattern);
+  if (!regex.hasMatch(text)) {
+    return "Invalid text or message format";
+  }
+  return null;
+}
+
+
 }

@@ -7,6 +7,7 @@ import 'package:rolanda_modified_version/config/base_url.dart';
 import 'package:rolanda_modified_version/config/theme/custom_swatch.dart';
 import 'package:rolanda_modified_version/providers/token_provider.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
+import 'package:rolanda_modified_version/utils/image_assets.dart';
 import 'package:rolanda_modified_version/utils/storage_service.dart';
 import '../../providers/profile_provider.dart';
 import '../../providers/theme_provider.dart';
@@ -25,15 +26,14 @@ class _ProfileDetailsState extends State<ProfileDetails> {
     super.initState();
     final profileProvider =
         Provider.of<ProfileProvider>(context, listen: false);
-    profileProvider
-        .loadProfileData(); // Fetch profile data when screen is loaded
+    profileProvider.loadProfileData();
   }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final colorTheme = Theme.of(context).colorScheme;
-    Provider.of<TokenProvider>(context);
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: colorTheme.surface,
@@ -70,15 +70,17 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       backgroundColor: customSwatch,
                       child: CircleAvatar(
                         radius: 88,
-                        backgroundImage:
-                            NetworkImage("$baseUrl${profile.image!}"),
+                        backgroundImage: profile.image != null
+                            ? NetworkImage("$baseUrl${profile.image!}")
+                            : const AssetImage(ImageAssets.profileImage)
+                                as ImageProvider,
                       ),
                     ),
                     SizedBox(
                       height: Dimensions.height10,
                     ),
                     Text(
-                      profile.fullName!,
+                      profile.fullName ?? "N/A",
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const Divider(
@@ -96,100 +98,25 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ListTile(
-                            onTap: null,
-                            leading: Container(
-                              padding: const EdgeInsets.all(7),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                              child: const Icon(
-                                Icons.mail_outline,
-                                color: customSwatch,
-                              ),
-                            ),
-                            title: Text(
-                              profile.email!,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                          _buildListTile(
+                            icon: Icons.mail_outline,
+                            title: profile.email ?? "N/A",
                           ),
-                          ListTile(
-                            onTap: null,
-                            leading: Container(
-                              padding: const EdgeInsets.all(7),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                              child: const Icon(
-                                Icons.phone_outlined,
-                                color: customSwatch,
-                              ),
-                            ),
-                            title: Text(
-                              profile.phone!,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                          _buildListTile(
+                            icon: Icons.phone_outlined,
+                            title: profile.phone ?? "N/A",
                           ),
-                          ListTile(
-                            onTap: null,
-                            leading: Container(
-                              padding: const EdgeInsets.all(7),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                              child: const Icon(
-                                Icons.location_city_outlined,
-                                color: customSwatch,
-                              ),
-                            ),
-                            title: Text(
-                              profile.city!,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                          _buildListTile(
+                            icon: Icons.location_city_outlined,
+                            title: profile.city ?? "N/A",
                           ),
-                          ListTile(
-                            onTap: null,
-                            leading: Container(
-                              padding: const EdgeInsets.all(7),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                              child: const Icon(
-                                Icons.location_pin,
-                                color: customSwatch,
-                              ),
-                            ),
-                            title: Text(
-                              profile.country!,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                          _buildListTile(
+                            icon: Icons.location_pin,
+                            title: profile.country ?? "N/A",
                           ),
-                          ListTile(
-                            onTap: null,
-                            leading: Container(
-                              padding: const EdgeInsets.all(7),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                              child: const Icon(
-                                Icons.female_outlined,
-                                color: customSwatch,
-                              ),
-                            ),
-                            title: Text(
-                              profile.gender!,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                          _buildListTile(
+                            icon: Icons.female_outlined,
+                            title: profile.gender ?? "N/A",
                           ),
                           const Divider(),
                           SizedBox(
@@ -224,7 +151,6 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                               ListTile(
                                 onTap: () async {
                                   await StorageService().clearUserData();
-
                                   await Provider.of<TokenProvider>(context,
                                           listen: false)
                                       .refreshTokenStatus();
@@ -265,9 +191,23 @@ class _ProfileDetailsState extends State<ProfileDetails> {
     );
   }
 
-  toggleSwitch(value) {
-    // setState(() {
-    //   value = !value;
-    // });
+  Widget _buildListTile({required IconData icon, required String title}) {
+    return ListTile(
+      leading: Container(
+        padding: const EdgeInsets.all(7),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(7),
+        ),
+        child: Icon(
+          icon,
+          color: customSwatch,
+        ),
+      ),
+      title: Text(
+        title,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+    );
   }
 }

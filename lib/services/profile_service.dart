@@ -1,9 +1,9 @@
-import '../model/profile.dart';
+import '../model/profile_model.dart';
 import '../repository/profile_repository.dart';
 import '../utils/storage_service.dart';
 
 abstract class ProfileService {
-  Future<Profile> getProfileData();
+  Future<ProfileModel> getProfileData();
 }
 
 class ProfileServiceImpl implements ProfileService {
@@ -13,7 +13,7 @@ class ProfileServiceImpl implements ProfileService {
   ProfileServiceImpl({required this.repository, required this.storageService});
 
   @override
-  Future<Profile> getProfileData() async {
+  Future<ProfileModel> getProfileData() async {
     // Retrieve the user token from the StorageService
     String? token = await storageService.getUserToken();
     if (token == null) {

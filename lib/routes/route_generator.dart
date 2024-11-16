@@ -19,7 +19,7 @@ class RouteGenerator {
       case Routes.guest:
         return MaterialPageRoute(builder: (_) => const GuestHomePages());
       case Routes.contactUs:
-        return MaterialPageRoute(builder: (_) => ContactUs());
+        return MaterialPageRoute(builder: (_) => const ContactUs());
       case Routes.homepage:
         return MaterialPageRoute(builder: (_) => const Homepage());
       // case Routes.profile:

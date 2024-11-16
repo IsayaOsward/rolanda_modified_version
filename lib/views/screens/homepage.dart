@@ -40,7 +40,7 @@ class _HomepageState extends State<Homepage> {
       token != null
           ? ReservationScreen(token: token!)
           : const Center(child: CircularProgressIndicator()),
-      ContactUs(),
+      const ContactUs(),
       const ProfileDetails(),
     ];
 

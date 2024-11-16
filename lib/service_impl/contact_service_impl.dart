@@ -10,24 +10,17 @@ class ContactServiceImpl implements ContactService {
   Future<bool> sendMessage(ContactModel contact) async {
     const url = '$baseUrl/home/api/contact-us/';
 
-    Map<String, dynamic> contactForm = {
-      "fullname": "${contact.firstName} ${contact.lastName}",
-      "email": contact.email,
-      "phone": contact.phone,
-      "address": contact.address,
-      "message_title": "Inquiry about booking",
-      "message_body": contact.message
-    };
-
+    Map<String, dynamic> contactForm = contact.toJson();
+    print(contactForm);
     try {
       final response = await http.post(
         Uri.parse(url),
         headers: {
-          'Content-Type': 'application/json', // Add this header
+          'Content-Type': 'application/json',
         },
         body: json.encode(contactForm),
       );
-
+      print("====================>${response.body}");
       return response.statusCode == 200;
     } catch (e) {
       return false;

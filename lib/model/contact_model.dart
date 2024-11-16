@@ -24,8 +24,8 @@ class ContactModel {
       'email': email,
       'phone': phone,
       'address': address,
-      'message_title': 'Contact Us',
-      'message': message,
+      'message_title': 'User Inquiries',
+      'message_body': message,
     };
   }
 }

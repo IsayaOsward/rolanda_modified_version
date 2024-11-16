@@ -1,5 +1,5 @@
-import '../model/profile.dart';
+import '../model/profile_model.dart';
 
 abstract class ProfileRepository {
-  Future<Profile> fetchProfileData();
+  Future<ProfileModel> fetchProfileData();
 }
