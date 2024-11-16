@@ -90,6 +90,23 @@ class Validator {
     return null;
   }
 
+  // Phone number validation (must start with 0 and be exactly 10 digits)
+static String? validatePhoneNumber(String? phoneNumber, BuildContext context) {
+  if (phoneNumber == null || phoneNumber.isEmpty) {
+    return "This field is required";
+  }
+
+  // Phone number pattern: starts with 0 and has exactly 10 digits
+  String phonePattern = r'^0\d{9}$';
+  RegExp regex = RegExp(phonePattern);
+
+  if (!regex.hasMatch(phoneNumber)) {
+    return "Phone number must start with 0 and be exactly 10 digits";
+  }
+
+  return null;
+}
+
   // Number validation (ensure it's only digits, no strings)
   static String? validateNumber(String? number, BuildContext context) {
     if (number == null || number.isEmpty) {
