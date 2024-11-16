@@ -1,4 +1,6 @@
 // providers/contact_provider.dart
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:rolanda_modified_version/model/contact_model.dart';
 import 'package:rolanda_modified_version/repository/contact_repository.dart';

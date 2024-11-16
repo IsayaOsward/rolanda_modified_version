@@ -8,7 +8,6 @@ import '../services/contact_service.dart';
 class ContactServiceImpl implements ContactService {
   @override
   Future<bool> sendMessage(ContactModel contact) async {
-    print("========================================");
     const url = '$baseUrl/home/api/contact-us/';
 
     Map<String, dynamic> contactForm = {
@@ -20,7 +19,6 @@ class ContactServiceImpl implements ContactService {
       "message_body": contact.message
     };
 
-    print(contactForm);
     try {
       final response = await http.post(
         Uri.parse(url),
@@ -30,10 +28,8 @@ class ContactServiceImpl implements ContactService {
         body: json.encode(contactForm),
       );
 
-      print(response.body);
       return response.statusCode == 200;
     } catch (e) {
-      print("Error: $e");
       return false;
     }
   }

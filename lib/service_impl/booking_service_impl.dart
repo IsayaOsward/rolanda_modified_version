@@ -45,7 +45,6 @@ class BookingServiceImpl implements BookingService {
 
       if (response.statusCode == 201) {
         // Handle success response
-        print('Booking confirmed');
 
         return true;
       } else {
