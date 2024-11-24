@@ -7,5 +7,8 @@ abstract class BookingService {
     int children,
     String roomType,
     int roomId,
+    String fullName,
+    String emailAddress,
+    String phoneNumber,
   );
 }

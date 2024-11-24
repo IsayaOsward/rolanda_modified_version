@@ -20,23 +20,27 @@ class BookingProvider with ChangeNotifier {
     int children,
     String roomType,
     int roomId,
+    String fullName,
+    String emailAddress,
+    String phoneNumber,
   ) async {
     _setLoading(true);
     try {
       bool response = await _bookingService.confirmBooking(
-        hotelId,
-        checkIn,
-        checkOut,
-        adult,
-        children,
-        roomType,
-        roomId,
-      );
+          hotelId,
+          checkIn,
+          checkOut,
+          adult,
+          children,
+          roomType,
+          roomId,
+          fullName,
+          emailAddress,
+          phoneNumber);
 
       if (response) {
         return true;
-      }
-      else{
+      } else {
         return false;
       }
     } finally {

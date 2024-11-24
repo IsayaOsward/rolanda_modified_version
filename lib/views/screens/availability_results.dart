@@ -8,13 +8,19 @@ import 'package:rolanda_modified_version/routes/routes.dart';
 import 'package:rolanda_modified_version/utils/calculates_nights_difference.dart';
 import 'package:rolanda_modified_version/utils/date_converter.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
+import 'package:rolanda_modified_version/utils/inputs_validation.dart';
 
 class AvailabilityResults extends StatelessWidget {
   final dynamic resultData;
   final int adult, children;
   final dynamic hotelData;
 
-  const AvailabilityResults({
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneNumberController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  AvailabilityResults({
     super.key,
     required this.resultData,
     required this.hotelData,
@@ -57,11 +63,75 @@ class AvailabilityResults extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text("Booking Confirmation"),
-            content: Text(
-              "Your room has been successfully added to the selection. The total cost for this booking is ${hotelPrice * calculateNightDifference(
-                    checkInDate,
-                    checkOutDate,
-                  )}",
+            content: SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Your room has been successfully added to the selection. The total cost for this booking is ${hotelPrice * calculateNightDifference(
+                            checkInDate,
+                            checkOutDate,
+                          )}",
+                    ),
+                    SizedBox(
+                      height: Dimensions.height10,
+                    ),
+                    TextFormField(
+                      controller: firstNameController,
+                      keyboardType: TextInputType.name,
+                      decoration: const InputDecoration(
+                        labelText: "First name",
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) =>
+                          Validator.validateName(value, context),
+                    ),
+                    SizedBox(
+                      height: Dimensions.height10,
+                    ),
+                    TextFormField(
+                      controller: lastNameController,
+                      keyboardType: TextInputType.name,
+                      decoration: const InputDecoration(
+                        labelText: "Last name",
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) =>
+                          Validator.validateName(value, context),
+                    ),
+                    SizedBox(
+                      height: Dimensions.height10,
+                    ),
+                    TextFormField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        labelText: "Email",
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) =>
+                          Validator.validateEmail(value, context),
+                    ),
+                    SizedBox(
+                      height: Dimensions.height10,
+                    ),
+                    TextFormField(
+                      controller: phoneNumberController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: "Phone number",
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) =>
+                          Validator.validateInternationalPhoneNumber(
+                              value, context),
+                    ),
+                  ],
+                ),
+              ),
             ),
             actions: [
               TextButton(
@@ -72,50 +142,55 @@ class AvailabilityResults extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () async {
-                  bool response = await confirmBooking.confirmBooking(
-                    hotelID,
-                    convertToYyyyMmDd(checkInDate),
-                    convertToYyyyMmDd(checkOutDate),
-                    adult,
-                    children,
-                    resultData['room_type'],
-                    roomId,
-                  );
+                  if (formKey.currentState!.validate()) {
+                    bool response = await confirmBooking.confirmBooking(
+                      hotelID,
+                      convertToYyyyMmDd(checkInDate),
+                      convertToYyyyMmDd(checkOutDate),
+                      adult,
+                      children,
+                      resultData['room_type'],
+                      roomId,
+                      "${firstNameController.text} ${lastNameController.text}",
+                      emailController.text,
+                      phoneNumberController.text,
+                    );
 
-                  if (response) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        backgroundColor: Colors.green,
-                        content: Text(
-                          "Booking placed successfully!",
-                          style: TextStyle(
-                            color: Colors.white,
+                    if (response) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          backgroundColor: Colors.green,
+                          content: Text(
+                            "Booking placed successfully!",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                    Future.delayed(const Duration(seconds: 2), () {
-                      Navigator.pop(context);
-                      Navigator.pushReplacementNamed(
-                        context,
-                        Routes.homepage,
                       );
-                    });
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: Theme.of(context).colorScheme.error,
-                        content: Text(
-                          "Sorry, failed to place your booking!",
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onError,
+                      Future.delayed(const Duration(seconds: 2), () {
+                        Navigator.pop(context);
+                        Navigator.pushReplacementNamed(
+                          context,
+                          Routes.homepage,
+                        );
+                      });
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Theme.of(context).colorScheme.error,
+                          content: Text(
+                            "Sorry, failed to place your booking!",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onError,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                    Future.delayed(const Duration(seconds: 2), () {
-                      Navigator.pop(context);
-                    });
+                      );
+                      Future.delayed(const Duration(seconds: 1), () {
+                        Navigator.pop(context);
+                      });
+                    }
                   }
                 },
                 child: const Text("Confirm Booking"),

@@ -9,14 +9,16 @@ class BookingServiceImpl implements BookingService {
   final storageService = StorageService();
   @override
   Future<bool> confirmBooking(
-    int hotelId,
-    String checkIn,
-    String checkOut,
-    int adult,
-    int children,
-    String roomType,
-    int roomId,
-  ) async {
+      int hotelId,
+      String checkIn,
+      String checkOut,
+      int adult,
+      int children,
+      String roomType,
+      int roomId,
+      String fullName,
+      String emailAddress,
+      String phoneNumber) async {
     const url = '$baseUrl/api/selected-rooms/';
     String? token = await storageService.getUserToken();
     final headers = {
@@ -44,9 +46,22 @@ class BookingServiceImpl implements BookingService {
       );
 
       if (response.statusCode == 201) {
-        // Handle success response
-
-        return true;
+        final Map<String, dynamic> res = jsonDecode(response.body);
+        // Access the booking_id
+        final bookingId = res["booking_id"];
+        String endPoint = '$baseUrl/api/checkout/$bookingId/';
+        final checkoutBody = jsonEncode({
+          "full_name": fullName,
+          "email": emailAddress,
+          "phone": phoneNumber
+        });
+        final result = await http.post(Uri.parse(endPoint),
+            headers: headers, body: checkoutBody);
+        if (result.statusCode == 200 || result.statusCode == 201) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
         return false;
       }

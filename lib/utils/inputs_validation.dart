@@ -108,6 +108,24 @@ static String? validatePhoneNumber(String? phoneNumber, BuildContext context) {
   return null;
 }
 
+static String? validateInternationalPhoneNumber(
+      String? phoneNumber, BuildContext context) {
+    if (phoneNumber == null || phoneNumber.isEmpty) {
+      return "This field is required";
+    }
+
+    // Pattern for 12-digit phone number without leading '+'
+    String phonePattern = r'^\d{12}$';
+    RegExp regex = RegExp(phonePattern);
+
+    if (!regex.hasMatch(phoneNumber)) {
+      return "Phone number must be exactly 12 digits without a leading '+'";
+    }
+
+    return null;
+  }
+
+
   // Number validation (ensure it's only digits, no strings)
   static String? validateNumber(String? number, BuildContext context) {
     if (number == null || number.isEmpty) {

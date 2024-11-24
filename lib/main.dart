@@ -50,13 +50,11 @@ Future<void> main() async {
     ChangeNotifierProvider(create: (_) => ThemeProvider()),
     ChangeNotifierProvider(create: (_) => CheckAvailabilityProvider()),
     ChangeNotifierProvider(create: (_) => LanguageProvider()),
-    ChangeNotifierProvider(
-        create: (_) => TokenProvider()),
+    ChangeNotifierProvider(create: (_) => TokenProvider()),
     ChangeNotifierProvider(
       create: (context) => LoginProvider(
         LoginRepository(LoginServiceImpl(baseUrl)),
-        context.read<
-            TokenProvider>(),
+        context.read<TokenProvider>(),
       ),
     ),
     Provider<RegistrationRepository>(
