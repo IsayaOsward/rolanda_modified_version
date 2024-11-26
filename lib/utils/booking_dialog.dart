@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rolanda_modified_version/config/theme/custom_swatch.dart';
 import 'package:rolanda_modified_version/providers/check_availability_provider.dart';
-import 'package:rolanda_modified_version/views/screens/availability_results.dart';
+import 'package:rolanda_modified_version/utils/views/screens/availability_results.dart';
 
 class BookingDialog extends StatefulWidget {
   final dynamic hotel;

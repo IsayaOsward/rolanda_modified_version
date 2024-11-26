@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:rolanda_modified_version/config/base_url.dart';
+import 'package:rolanda_modified_version/model/checkout_response_model.dart';
 import 'dart:convert';
 
 import 'package:rolanda_modified_version/services/confirm_booking_service.dart';
@@ -8,7 +9,7 @@ import 'package:rolanda_modified_version/utils/storage_service.dart';
 class BookingServiceImpl implements BookingService {
   final storageService = StorageService();
   @override
-  Future<bool> confirmBooking(
+  Future<BookingResponse> confirmBooking(
       int hotelId,
       String checkIn,
       String checkOut,
@@ -58,15 +59,17 @@ class BookingServiceImpl implements BookingService {
         final result = await http.post(Uri.parse(endPoint),
             headers: headers, body: checkoutBody);
         if (result.statusCode == 200 || result.statusCode == 201) {
-          return true;
+           final Map<String, dynamic> jsonResult = jsonDecode(result.body);
+           final bookingResponse = BookingResponse.fromJson(jsonResult);
+          return bookingResponse;
         } else {
-          return false;
+          return BookingResponse.defaultResponse();
         }
       } else {
-        return false;
+        return BookingResponse.defaultResponse();
       }
     } catch (e) {
-      return false;
+      return BookingResponse.defaultResponse();
     }
   }
 }

@@ -123,8 +123,8 @@ class MyApp extends StatelessWidget {
             ),
           );
         } else {
-          final initialRoute =
-              tokenProvider.isTokenExpired ? Routes.guest : Routes.homepage;
+          // final initialRoute =
+          //     tokenProvider.isTokenExpired ? Routes.guest : Routes.homepage;
 
           return MaterialApp(
             title: 'Rolanda App',
@@ -136,7 +136,7 @@ class MyApp extends StatelessWidget {
             locale: languageProvider.currentLocale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            initialRoute: initialRoute,
+            initialRoute: "/choosePaymentMethod",
             onGenerateRoute: RouteGenerator.generateRoute,
           );
         }

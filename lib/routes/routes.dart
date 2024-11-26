@@ -6,4 +6,5 @@ class Routes {
   static const String contactUs = '/contact_us';
   static const String profile = "/profile";
   static const String homepage = "/homepage";
+  static const String choosePaymentMethod = "/choosePaymentMethod";
 }

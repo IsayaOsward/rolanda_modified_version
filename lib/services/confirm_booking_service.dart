@@ -1,5 +1,7 @@
+import '../model/checkout_response_model.dart';
+
 abstract class BookingService {
-  Future<bool> confirmBooking(
+  Future<BookingResponse> confirmBooking(
     int hotelId,
     String checkIn,
     String checkOut,

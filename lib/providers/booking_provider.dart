@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rolanda_modified_version/model/checkout_response_model.dart';
 import 'package:rolanda_modified_version/services/confirm_booking_service.dart';
 
 class BookingProvider with ChangeNotifier {
@@ -12,7 +13,7 @@ class BookingProvider with ChangeNotifier {
   BookingProvider(this._bookingService);
 
   // This method will be called when confirming the booking
-  Future<bool> confirmBooking(
+  Future<BookingResponse> confirmBooking(
     int hotelId,
     String checkIn,
     String checkOut,
@@ -26,7 +27,7 @@ class BookingProvider with ChangeNotifier {
   ) async {
     _setLoading(true);
     try {
-      bool response = await _bookingService.confirmBooking(
+      final response = await _bookingService.confirmBooking(
           hotelId,
           checkIn,
           checkOut,
@@ -38,10 +39,11 @@ class BookingProvider with ChangeNotifier {
           emailAddress,
           phoneNumber);
 
-      if (response) {
-        return true;
-      } else {
-        return false;
+      if (response.successId != "Unknown") {
+        return response;
+      }
+      else{
+        return response;
       }
     } finally {
       _setLoading(false);

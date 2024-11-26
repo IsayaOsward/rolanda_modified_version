@@ -140,6 +140,21 @@ static String? validateInternationalPhoneNumber(
     return null;
   }
 
+// Bank account number validation (8 to 17 digits)
+  static String? validateBankAccountNumber(
+      String? accountNumber, BuildContext context) {
+    if (accountNumber == null || accountNumber.isEmpty) {
+      return "This field is required";
+    }
+    // Regular expression to ensure the input only contains digits and length is between 8 and 17
+    String accountPattern = r'^\d{8,17}$';
+    RegExp regex = RegExp(accountPattern);
+    if (!regex.hasMatch(accountNumber)) {
+      return "Account number must be 8 to 17 digits long";
+    }
+    return null;
+  }
+
 
 static String? validateAddress(String? address,BuildContext context) {
   if (address == null || address.isEmpty) {
