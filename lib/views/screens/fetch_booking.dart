@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rolanda_modified_version/providers/fetch_booking_provider.dart';
 
-import '../../../model/reservation_model.dart';
-import '../../../repository/invoice_repository.dart';
+import '../../model/reservation_model.dart';
+import '../../repository/invoice_repository.dart';
 import 'invoice.dart';
 
 class ReservationScreen extends StatefulWidget {
@@ -124,6 +124,15 @@ class ReservationScreenState extends State<ReservationScreen> {
                   onTap: () async {
                     await navigateToInvoice(context, reservation.bookingId);
                   },
+                  leading: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.transparent,
+                    child: Icon(
+                      Icons.bed,
+                      color: Theme.of(context).colorScheme.surface,
+                      size: 30,
+                    ),
+                  ),
                   title: Text(
                     reservation.fullName,
                     overflow: TextOverflow.ellipsis,

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:rolanda_modified_version/model/checkout_response_model.dart';
 import 'package:rolanda_modified_version/routes/routes.dart';
-import 'package:rolanda_modified_version/utils/views/auth/login.dart';
-import 'package:rolanda_modified_version/utils/views/auth/registration_screen.dart';
-import 'package:rolanda_modified_version/utils/views/contacts/contact_us.dart';
-import 'package:rolanda_modified_version/utils/views/payments_screens/choose_payment_method.dart';
-import 'package:rolanda_modified_version/utils/views/screens/guest_home_pages.dart';
-import 'package:rolanda_modified_version/utils/views/onboarding/on_boarding_screen.dart';
-import 'package:rolanda_modified_version/utils/views/screens/homepage.dart';
+import 'package:rolanda_modified_version/views/auth/login.dart';
+import 'package:rolanda_modified_version/views/auth/registration_screen.dart';
+import 'package:rolanda_modified_version/views/contacts/contact_us.dart';
+import 'package:rolanda_modified_version/views/payments_screens/choose_payment_method.dart';
+import 'package:rolanda_modified_version/views/screens/guest_home_pages.dart';
+import 'package:rolanda_modified_version/views/onboarding/on_boarding_screen.dart';
+import 'package:rolanda_modified_version/views/screens/homepage.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

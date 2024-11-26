@@ -7,7 +7,7 @@ import 'package:rolanda_modified_version/providers/contact_provider.dart';
 import 'package:rolanda_modified_version/reusable_widgets/textfield_widget.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
 import 'package:rolanda_modified_version/utils/inputs_validation.dart';
-import 'package:rolanda_modified_version/utils/views/contacts/about_us.dart';
+import 'package:rolanda_modified_version/views/contacts/about_us.dart';
 
 class ContactUs extends StatefulWidget {
   const ContactUs({super.key});

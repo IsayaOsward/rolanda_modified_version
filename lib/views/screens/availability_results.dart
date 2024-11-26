@@ -8,7 +8,7 @@ import 'package:rolanda_modified_version/utils/calculates_nights_difference.dart
 import 'package:rolanda_modified_version/utils/date_converter.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
 import 'package:rolanda_modified_version/utils/inputs_validation.dart';
-import 'package:rolanda_modified_version/utils/views/payments_screens/choose_payment_method.dart';
+import 'package:rolanda_modified_version/views/payments_screens/choose_payment_method.dart';
 
 class AvailabilityResults extends StatelessWidget {
   final dynamic resultData;
@@ -64,73 +64,77 @@ class AvailabilityResults extends StatelessWidget {
           return AlertDialog(
             title: const Text("Booking Confirmation"),
             content: SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Your room has been successfully added to the selection. The total cost for this booking is ${hotelPrice * calculateNightDifference(
-                            checkInDate,
-                            checkOutDate,
-                          )}",
+              child: Stack(
+                children: [
+                  Form(
+                    key: formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Your room has been successfully added to the selection. The total cost for this booking is ${hotelPrice * calculateNightDifference(
+                                checkInDate,
+                                checkOutDate,
+                              )}",
+                        ),
+                        SizedBox(
+                          height: Dimensions.height10,
+                        ),
+                        TextFormField(
+                          controller: firstNameController,
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(
+                            labelText: "First name",
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: (value) =>
+                              Validator.validateName(value, context),
+                        ),
+                        SizedBox(
+                          height: Dimensions.height10,
+                        ),
+                        TextFormField(
+                          controller: lastNameController,
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(
+                            labelText: "Last name",
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: (value) =>
+                              Validator.validateName(value, context),
+                        ),
+                        SizedBox(
+                          height: Dimensions.height10,
+                        ),
+                        TextFormField(
+                          controller: emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration(
+                            labelText: "Email",
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: (value) =>
+                              Validator.validateEmail(value, context),
+                        ),
+                        SizedBox(
+                          height: Dimensions.height10,
+                        ),
+                        TextFormField(
+                          controller: phoneNumberController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: "Phone number",
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: (value) =>
+                              Validator.validateInternationalPhoneNumber(
+                                  value, context),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: Dimensions.height10,
-                    ),
-                    TextFormField(
-                      controller: firstNameController,
-                      keyboardType: TextInputType.name,
-                      decoration: const InputDecoration(
-                        labelText: "First name",
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) =>
-                          Validator.validateName(value, context),
-                    ),
-                    SizedBox(
-                      height: Dimensions.height10,
-                    ),
-                    TextFormField(
-                      controller: lastNameController,
-                      keyboardType: TextInputType.name,
-                      decoration: const InputDecoration(
-                        labelText: "Last name",
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) =>
-                          Validator.validateName(value, context),
-                    ),
-                    SizedBox(
-                      height: Dimensions.height10,
-                    ),
-                    TextFormField(
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        labelText: "Email",
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) =>
-                          Validator.validateEmail(value, context),
-                    ),
-                    SizedBox(
-                      height: Dimensions.height10,
-                    ),
-                    TextFormField(
-                      controller: phoneNumberController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: "Phone number",
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) =>
-                          Validator.validateInternationalPhoneNumber(
-                              value, context),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             actions: [
@@ -143,6 +147,7 @@ class AvailabilityResults extends StatelessWidget {
               TextButton(
                 onPressed: () async {
                   if (formKey.currentState!.validate()) {
+                    _showLoader(context);
                     final response = await confirmBooking.confirmBooking(
                       hotelID,
                       convertToYyyyMmDd(checkInDate),
@@ -155,7 +160,7 @@ class AvailabilityResults extends StatelessWidget {
                       emailController.text,
                       phoneNumberController.text,
                     );
-
+                    Navigator.pop(context);
                     if (response.bookingId != "Unknown") {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -168,17 +173,20 @@ class AvailabilityResults extends StatelessWidget {
                           ),
                         ),
                       );
-                      Future.delayed(const Duration(milliseconds: 900), () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChoosePaymentMethod(
-                              bookingResponse: response,
+                      Future.delayed(
+                        const Duration(milliseconds: 900),
+                        () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChoosePaymentMethod(
+                                bookingResponse: response,
+                              ),
                             ),
-                          ),
-                        );
-                      });
+                          );
+                        },
+                      );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -324,6 +332,15 @@ class AvailabilityResults extends StatelessWidget {
                             adult,
                             children);
                       },
+                      leading: CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        child: Icon(
+                          Icons.bed,
+                          size: 40,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -361,4 +378,16 @@ class AvailabilityResults extends StatelessWidget {
       ),
     );
   }
+}
+
+void _showLoader(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false, // Prevent dismissing the dialog
+    builder: (BuildContext context) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    },
+  );
 }

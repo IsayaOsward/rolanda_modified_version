@@ -7,7 +7,7 @@ import 'package:rolanda_modified_version/utils/constants/colors.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
 import 'package:rolanda_modified_version/utils/image_assets.dart';
 import 'package:rolanda_modified_version/utils/inputs_validation.dart';
-import 'package:rolanda_modified_version/utils/views/screens/apartment_details.dart';
+import 'package:rolanda_modified_version/views/screens/apartment_details.dart';
 import 'package:shimmer/shimmer.dart';
 import 'dart:async';
 

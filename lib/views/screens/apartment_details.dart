@@ -11,7 +11,7 @@ import 'package:rolanda_modified_version/utils/constants/colors.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
 import 'package:rolanda_modified_version/utils/image_assets.dart';
 
-import '../../../routes/routes.dart';
+import '../../routes/routes.dart';
 
 class ApartmentDetails extends StatefulWidget {
   final dynamic hotels;

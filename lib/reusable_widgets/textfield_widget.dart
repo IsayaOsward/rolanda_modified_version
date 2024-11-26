@@ -5,7 +5,7 @@ import 'package:rolanda_modified_version/utils/dimensions.dart';
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
-  final Icon prefixIcon;
+  final Icon? prefixIcon;
   final bool obscureText;
   final Function(String?) validator;
   final VoidCallback? suffixIconOnPressed;
@@ -14,7 +14,7 @@ class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     required this.controller,
     required this.label,
-    required this.prefixIcon,
+    this.prefixIcon,
     this.obscureText = false,
     required this.validator,
     this.suffixIconOnPressed,

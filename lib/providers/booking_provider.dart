@@ -25,7 +25,7 @@ class BookingProvider with ChangeNotifier {
     String emailAddress,
     String phoneNumber,
   ) async {
-    _setLoading(true);
+    setLoading(true);
     try {
       final response = await _bookingService.confirmBooking(
           hotelId,
@@ -46,11 +46,11 @@ class BookingProvider with ChangeNotifier {
         return response;
       }
     } finally {
-      _setLoading(false);
+      setLoading(false);
     }
   }
 
-  void _setLoading(bool isLoading) {
+  void setLoading(bool isLoading) {
     _isLoading = isLoading;
     notifyListeners();
   }

@@ -10,7 +10,7 @@ import 'package:rolanda_modified_version/routes/routes.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
 import 'package:rolanda_modified_version/utils/inputs_validation.dart';
 
-import '../../../model/user_registration_model.dart';
+import '../../model/user_registration_model.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});

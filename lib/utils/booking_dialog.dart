@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rolanda_modified_version/config/theme/custom_swatch.dart';
 import 'package:rolanda_modified_version/providers/check_availability_provider.dart';
-import 'package:rolanda_modified_version/utils/views/screens/availability_results.dart';
+import 'package:rolanda_modified_version/views/screens/availability_results.dart';
 
 class BookingDialog extends StatefulWidget {
   final dynamic hotel;
@@ -22,8 +22,6 @@ class _BookingDialogState extends State<BookingDialog> {
   final TextEditingController _adultsController = TextEditingController();
   final TextEditingController _childrenController = TextEditingController();
 
-  DateTime _checkInDate = DateTime.now();
-  DateTime _checkOutDate = DateTime.now();
   bool _hasChildren = false;
   String _selectedCategory = "";
   Set<String> categories = {};
@@ -58,6 +56,8 @@ class _BookingDialogState extends State<BookingDialog> {
     super.initState();
   }
 
+  DateTime _checkInDate = DateTime.now();
+  DateTime _checkOutDate = DateTime.now().add(const Duration(days: 1));
   @override
   Widget build(BuildContext context) {
     final checkAvailabilityProvider =
@@ -89,9 +89,9 @@ class _BookingDialogState extends State<BookingDialog> {
                 // Category Dropdown
                 DropdownButtonFormField<String>(
                   value: _selectedCategory,
-                  decoration: const InputDecoration(border: OutlineInputBorder(
-                    borderSide: BorderSide(color: customSwatch)
-                  )),
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: customSwatch))),
                   hint: const Text('Select Category'),
                   onChanged: (value) {
                     setState(() {
@@ -103,7 +103,8 @@ class _BookingDialogState extends State<BookingDialog> {
                       value: category,
                       child: Text(
                         category,
-                        style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface),
                       ),
                     );
                   }).toList(),
@@ -123,6 +124,10 @@ class _BookingDialogState extends State<BookingDialog> {
                     if (pickedDate != null) {
                       setState(() {
                         _checkInDate = pickedDate;
+                        if (_checkOutDate.isBefore(pickedDate)) {
+                          _checkOutDate =
+                              pickedDate.add(const Duration(days: 1));
+                        }
                         _checkInController.text =
                             DateFormat('yyyy-MM-dd').format(pickedDate);
                       });
@@ -133,14 +138,12 @@ class _BookingDialogState extends State<BookingDialog> {
                       controller: _checkInController,
                       decoration:
                           const InputDecoration(labelText: 'Check-In Date'),
-                      focusNode: _checkInFocusNode,
                     ),
                   ),
                 ),
 
                 const SizedBox(height: 16),
 
-                // Check-out Date Picker
                 GestureDetector(
                   onTap: () async {
                     final DateTime? pickedDate = await showDatePicker(
@@ -162,7 +165,6 @@ class _BookingDialogState extends State<BookingDialog> {
                       controller: _checkOutController,
                       decoration:
                           const InputDecoration(labelText: 'Check-Out Date'),
-                      focusNode: _checkOutFocusNode,
                     ),
                   ),
                 ),

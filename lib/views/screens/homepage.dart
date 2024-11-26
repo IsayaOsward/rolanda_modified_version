@@ -2,10 +2,10 @@ import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 import 'package:rolanda_modified_version/config/theme/custom_swatch.dart';
 import 'package:rolanda_modified_version/utils/storage_service.dart';
-import 'package:rolanda_modified_version/utils/views/contacts/contact_us.dart';
-import 'package:rolanda_modified_version/utils/views/profile/user_profile.dart';
-import 'package:rolanda_modified_version/utils/views/screens/fetch_booking.dart';
-import 'package:rolanda_modified_version/utils/views/screens/guest_home_pages.dart';
+import 'package:rolanda_modified_version/views/contacts/contact_us.dart';
+import 'package:rolanda_modified_version/views/profile/user_profile.dart';
+import 'package:rolanda_modified_version/views/screens/fetch_booking.dart';
+import 'package:rolanda_modified_version/views/screens/guest_home_pages.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});

@@ -6,6 +6,7 @@ import 'package:rolanda_modified_version/config/base_url.dart';
 import 'package:rolanda_modified_version/config/theme/dark/theme.dart';
 import 'package:rolanda_modified_version/config/theme/light/theme.dart';
 import 'package:rolanda_modified_version/providers/add_to_selection_provider.dart';
+import 'package:rolanda_modified_version/providers/booking_payments_provider.dart';
 import 'package:rolanda_modified_version/providers/booking_provider.dart';
 import 'package:rolanda_modified_version/providers/check_availability_provider.dart';
 import 'package:rolanda_modified_version/providers/contact_provider.dart';
@@ -16,7 +17,6 @@ import 'package:rolanda_modified_version/providers/theme_provider.dart';
 import 'package:rolanda_modified_version/repository/contact_repository.dart';
 import 'package:rolanda_modified_version/repository/login_repository.dart';
 import 'package:rolanda_modified_version/routes/route_generator.dart';
-import 'package:rolanda_modified_version/routes/routes.dart';
 import 'package:rolanda_modified_version/service_impl/booking_service_impl.dart';
 import 'package:rolanda_modified_version/service_impl/contact_service_impl.dart';
 import 'package:rolanda_modified_version/service_impl/login_service_impl.dart';
@@ -30,6 +30,7 @@ import 'providers/registration_provider.dart';
 import 'providers/token_provider.dart';
 import 'repository/fetch_booking_repository.dart';
 import 'repository/registration_repository.dart';
+import 'routes/routes.dart';
 import 'service_impl/fetch_booking_service_impl.dart';
 import 'service_impl/profile_service_impl.dart';
 import 'service_impl/registration_service_impl.dart';
@@ -93,6 +94,9 @@ Future<void> main() async {
       ),
     ),
     ChangeNotifierProvider(
+      create: (_) => BookingPaymentsProvider(),
+    ),
+    ChangeNotifierProvider(
       create: (context) => ProfileProvider(
         profileService: ProfileServiceImpl(
           repository: ProfileRepositoryImpl(),
@@ -123,8 +127,8 @@ class MyApp extends StatelessWidget {
             ),
           );
         } else {
-          // final initialRoute =
-          //     tokenProvider.isTokenExpired ? Routes.guest : Routes.homepage;
+          final initialRoute =
+              tokenProvider.isTokenExpired ? Routes.guest : Routes.homepage;
 
           return MaterialApp(
             title: 'Rolanda App',
@@ -136,7 +140,7 @@ class MyApp extends StatelessWidget {
             locale: languageProvider.currentLocale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            initialRoute: "/choosePaymentMethod",
+            initialRoute: initialRoute,
             onGenerateRoute: RouteGenerator.generateRoute,
           );
         }

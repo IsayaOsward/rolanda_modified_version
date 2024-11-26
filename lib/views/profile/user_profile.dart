@@ -9,9 +9,9 @@ import 'package:rolanda_modified_version/providers/token_provider.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
 import 'package:rolanda_modified_version/utils/image_assets.dart';
 import 'package:rolanda_modified_version/utils/storage_service.dart';
-import '../../../providers/profile_provider.dart';
-import '../../../providers/theme_provider.dart';
-import '../../../routes/routes.dart';
+import '../../providers/profile_provider.dart';
+import '../../providers/theme_provider.dart';
+import '../../routes/routes.dart';
 
 class ProfileDetails extends StatefulWidget {
   const ProfileDetails({super.key});
