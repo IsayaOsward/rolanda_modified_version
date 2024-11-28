@@ -11,6 +11,9 @@ import 'package:rolanda_modified_version/views/screens/apartment_details.dart';
 import 'package:shimmer/shimmer.dart';
 import 'dart:async';
 
+import '../../providers/theme_provider.dart';
+import '../../providers/token_provider.dart';
+
 class GuestHomePages extends StatefulWidget {
   const GuestHomePages({super.key});
 
@@ -85,6 +88,8 @@ class _GuestHomePagesState extends State<GuestHomePages> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isTokenExpired = Provider.of<TokenProvider>(context);
     return Scaffold(
       backgroundColor: colors.surface,
       appBar: AppBar(
@@ -95,12 +100,22 @@ class _GuestHomePagesState extends State<GuestHomePages> {
           style: Theme.of(context).textTheme.titleLarge,
         ),
         automaticallyImplyLeading: false,
-        actions: [
+        actions: isTokenExpired.isTokenExpired ? [
           IconButton(
-            onPressed: () {},
-            icon: Image.asset(ImageAssets.notification),
+            icon: Icon(
+              themeProvider.isDarkMode
+                  ? Icons.nightlight_round
+                  : Icons.wb_sunny,
+            ),
+            color: themeProvider.isDarkMode ? Colors.amber : Colors.blue,
+            tooltip: themeProvider.isDarkMode
+                ? 'Switch to Light Mode'
+                : 'Switch to Dark Mode',
+            onPressed: () {
+              themeProvider.toggleTheme(!themeProvider.isDarkMode);
+            },
           ),
-        ],
+        ]: null,
       ),
       body: Consumer<HotelsProvider>(builder: (context, provider, child) {
         return ConstrainedBox(

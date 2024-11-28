@@ -24,7 +24,8 @@ class Validator {
   }
 
   // Strong password validation for registration
-  static String? validateRegisterPassword(String? password, BuildContext context) {
+  static String? validateRegisterPassword(
+      String? password, BuildContext context) {
     if (password == null || password.isEmpty) {
       return "Password is required";
     }
@@ -38,12 +39,14 @@ class Validator {
 
     // Check if password contains at least one uppercase letter
     if (!password.contains(RegExp(r'[A-Z]'))) {
-      missingCriteria.add("Password must contain at least one upper case character");
+      missingCriteria
+          .add("Password must contain at least one upper case character");
     }
 
     // Check if password contains at least one lowercase letter
     if (!password.contains(RegExp(r'[a-z]'))) {
-      missingCriteria.add("Password must contain at least one upper case character");
+      missingCriteria
+          .add("Password must contain at least one upper case character");
     }
 
     // Check if password contains at least one digit
@@ -53,7 +56,8 @@ class Validator {
 
     // Check if password contains at least one special character
     if (!password.contains(RegExp(r'[@$!%*?&]'))) {
-      missingCriteria.add("Password must contain at least one special character"); // Use localized string
+      missingCriteria.add(
+          "Password must contain at least one special character"); // Use localized string
     }
 
     // If the missing criteria list is not empty, return the list of missing criteria
@@ -66,12 +70,13 @@ class Validator {
   }
 
   // Compare password and confirm password
-  static String? validateConfirmPassword(String? password, String? confirmPassword, BuildContext context) {
+  static String? validateConfirmPassword(
+      String? password, String? confirmPassword, BuildContext context) {
     if (confirmPassword == null || confirmPassword.isEmpty) {
       return "Confirm password is requried";
     }
     if (password != confirmPassword) {
-      return "Passwords does not match"; 
+      return "Passwords does not match";
     }
     return null;
   }
@@ -90,41 +95,66 @@ class Validator {
     return null;
   }
 
-
   // Phone number validation (must start with 0 and be exactly 10 digits)
-static String? validatePhoneNumber(String? phoneNumber, BuildContext context) {
-  if (phoneNumber == null || phoneNumber.isEmpty) {
-    return "This field is required";
-  }
-
-  // Phone number pattern: starts with 0 and has exactly 10 digits
-  String phonePattern = r'^0\d{9}$';
-  RegExp regex = RegExp(phonePattern);
-
-  if (!regex.hasMatch(phoneNumber)) {
-    return "Phone number must start with 0 and be exactly 10 digits";
-  }
-
-  return null;
-}
-
-static String? validateInternationalPhoneNumber(
+  static String? validatePhoneNumber(
       String? phoneNumber, BuildContext context) {
     if (phoneNumber == null || phoneNumber.isEmpty) {
       return "This field is required";
     }
 
-    // Pattern for 12-digit phone number without leading '+'
-    String phonePattern = r'^\d{12}$';
+    // Phone number pattern: starts with 0 and has exactly 10 digits
+    String phonePattern = r'^0\d{9}$';
     RegExp regex = RegExp(phonePattern);
 
     if (!regex.hasMatch(phoneNumber)) {
-      return "Phone number must be exactly 12 digits without a leading '+'";
+      return "Phone number must start with 0 and be exactly 10 digits";
     }
 
     return null;
   }
 
+  static String? validateInternationalPhoneNumber(
+      String? phoneNumber, BuildContext context) {
+    if (phoneNumber == null || phoneNumber.isEmpty) {
+      return "This field is required";
+    }
+
+    if (phoneNumber.startsWith('0')) {
+      // Must be 10 digits
+      if (phoneNumber.length != 10) {
+        return "Phone number must be exactly 10 digits if it starts with '0'";
+      }
+    } else if (phoneNumber.startsWith('+')) {
+      // Must be 13 characters including '+'
+      if (phoneNumber.length != 13) {
+        return "Phone number must be exactly 13 characters including '+'";
+      }
+    } else {
+      // Must be 12 digits
+      if (phoneNumber.length != 12) {
+        return "Phone number must be exactly 12 digits if it doesn't start with '0' or '+'";
+      }
+    }
+
+    return null; // Validation passed
+  }
+
+
+  static String? validateAndFormatPhoneNumber(String phoneNumber) {
+    if (phoneNumber.startsWith('0')) {
+      // Remove the leading zero and replace it with '255'
+      return '255${phoneNumber.substring(1)}';
+    } else if (phoneNumber.startsWith('255')) {
+      // Leave as it is
+      return phoneNumber;
+    } else if (phoneNumber.startsWith('+')) {
+      // Remove the leading '+'
+      return phoneNumber.substring(1);
+    } else {
+      // Return the original if no conditions are met
+      return phoneNumber;
+    }
+  }
 
   // Number validation (ensure it's only digits, no strings)
   static String? validateNumber(String? number, BuildContext context) {
@@ -155,32 +185,29 @@ static String? validateInternationalPhoneNumber(
     return null;
   }
 
-
-static String? validateAddress(String? address,BuildContext context) {
-  if (address == null || address.isEmpty) {
-    return "This field is required";
+  static String? validateAddress(String? address, BuildContext context) {
+    if (address == null || address.isEmpty) {
+      return "This field is required";
+    }
+    // Address can contain letters, numbers, spaces, and common address symbols
+    String addressPattern = r'^[a-zA-Z0-9\s,.-]+$';
+    RegExp regex = RegExp(addressPattern);
+    if (!regex.hasMatch(address)) {
+      return "Invalid address format";
+    }
+    return null;
   }
-  // Address can contain letters, numbers, spaces, and common address symbols
-  String addressPattern = r'^[a-zA-Z0-9\s,.-]+$';
-  RegExp regex = RegExp(addressPattern);
-  if (!regex.hasMatch(address)) {
-    return "Invalid address format";
-  }
-  return null;
-}
 
-static String? validateTextOrMessage(String? text, BuildContext context) {
-  if (text == null || text.isEmpty) {
-    return "This field is required";
+  static String? validateTextOrMessage(String? text, BuildContext context) {
+    if (text == null || text.isEmpty) {
+      return "This field is required";
+    }
+    // Text can contain alphanumeric characters, spaces, and common punctuation
+    String textPattern = r"""^[a-zA-Z0-9\s.,?!\'"-]+$""";
+    RegExp regex = RegExp(textPattern);
+    if (!regex.hasMatch(text)) {
+      return "Invalid text or message format";
+    }
+    return null;
   }
-  // Text can contain alphanumeric characters, spaces, and common punctuation
-  String textPattern =r"""^[a-zA-Z0-9\s.,?!\'"-]+$""";
-  RegExp regex = RegExp(textPattern);
-  if (!regex.hasMatch(text)) {
-    return "Invalid text or message format";
-  }
-  return null;
-}
-
-
 }
