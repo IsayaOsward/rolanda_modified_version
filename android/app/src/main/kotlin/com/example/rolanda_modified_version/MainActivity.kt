@@ -1,4 +1,4 @@
-package com.example.rolanda_modified_version
+package com.example.rolanda
 
 import io.flutter.embedding.android.FlutterActivity
 

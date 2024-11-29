@@ -219,8 +219,7 @@ class _ChoosePaymentMethodState extends State<ChoosePaymentMethod> {
                                   style: TextStyle(color: Colors.white),
                                 )),
                           );
-                          Navigator.pushReplacementNamed(
-                              context, Routes.homepage);
+                          Navigator.pop(context);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
