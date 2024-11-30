@@ -7,7 +7,7 @@ import 'package:rolanda_modified_version/services/registration_services.dart';
 
 class RegistrationServiceImpl implements RegistrationService {
   @override
-  Future<bool> registerUser(UserRegistration user) async {
+  Future<int> registerUser(UserRegistration user) async {
     const url = '$baseUrl/user/api/register/';
 
     final registerUser = {
@@ -27,6 +27,6 @@ class RegistrationServiceImpl implements RegistrationService {
       },
     );
     developer.log(response.body);
-    return response.statusCode == 201;
+    return response.statusCode;
   }
 }

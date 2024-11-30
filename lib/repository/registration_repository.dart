@@ -6,7 +6,7 @@ class RegistrationRepository {
 
   RegistrationRepository(this.registrationService);
 
-  Future<bool> registerUser(UserRegistration user) {
+  Future<int> registerUser(UserRegistration user) {
     return registrationService.registerUser(user);
   }
 }

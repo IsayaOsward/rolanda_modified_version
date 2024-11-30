@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rolanda_modified_version/model/checkout_response_model.dart';
 import 'package:rolanda_modified_version/providers/booking_payments_provider.dart';
-import 'package:rolanda_modified_version/routes/routes.dart';
 import 'package:rolanda_modified_version/utils/dimensions.dart';
 import 'package:rolanda_modified_version/utils/image_assets.dart';
 import 'package:rolanda_modified_version/utils/inputs_validation.dart';

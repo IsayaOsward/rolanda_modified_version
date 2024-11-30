@@ -13,10 +13,9 @@ class LoginServiceImpl implements LoginService {
   Future<Map<String, dynamic>> login(String username, String password) async {
     final response = await http.post(
       Uri.parse('$apiUrl/user/api/login/'),
-      body: {'email': username, 'password': password},
+      body: {'email': username.trim(), 'password': password.trim()},
     );
     if (response.statusCode == 200) {
-      
       await storageService.saveUserData(
         username: json.decode(response.body)['username'],
         email: json.decode(response.body)['email'],

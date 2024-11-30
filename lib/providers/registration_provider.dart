@@ -13,20 +13,20 @@ class RegistrationProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
-  Future<bool> registerUser(UserRegistration user) async {
+  Future<int> registerUser(UserRegistration user) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      final isSuccess = await registrationRepository.registerUser(user);
-      if (!isSuccess) {
+      final response = await registrationRepository.registerUser(user);
+      if (response !=201 ) {
         _errorMessage = "Registration failed. Please try again.";
       }
-      return isSuccess;
+      return response;
     } catch (e) {
-      _errorMessage = "An error occurred: $e";
-      return false;
+      _errorMessage = "An internal error occurred";
+      return 500;
     } finally {
       _isLoading = false;
       notifyListeners();

@@ -147,28 +147,42 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     listen: false);
 
                             final user = UserRegistration(
-                              firstName: firstnameController.text,
-                              lastName: lastnameController.text,
-                              email: emailController.text,
-                              phoneNumber: phoneNumberController.text,
-                              password: passwordController.text,
-                              confirmPassword: confirmPasswordController.text,
+                              firstName: firstnameController.text.trim(),
+                              lastName: lastnameController.text.trim(),
+                              email: emailController.text.trim(),
+                              phoneNumber: phoneNumberController.text.trim(),
+                              password: passwordController.text.trim(),
+                              confirmPassword: confirmPasswordController.text.trim(),
                             );
 
                             final isSuccess =
                                 await registrationProvider.registerUser(user);
 
-                            if (isSuccess) {
+                            if (isSuccess == 201) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                    content: Text("Registered Successfully!")),
+                                  content: Text(
+                                    "Registered Successfully!",
+                                  ),
+                                ),
+                              );
+                            } else if (isSuccess == 400) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    registrationProvider.errorMessage ??
+                                        "User with this Email already exists",
+                                  ),
+                                ),
                               );
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                    content: Text(
-                                        registrationProvider.errorMessage ??
-                                            "Registration failed")),
+                                  content: Text(
+                                    registrationProvider.errorMessage ??
+                                        "Registration failed",
+                                  ),
+                                ),
                               );
                             }
                           }
