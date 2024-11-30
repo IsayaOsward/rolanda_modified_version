@@ -11,8 +11,8 @@ class RegistrationServiceImpl implements RegistrationService {
     const url = '$baseUrl/user/api/register/';
 
     final registerUser = {
-      "username" : user.email,
-      "full_name" : "${user.firstName} ${user.lastName}",
+      "username": user.email,
+      "full_name": "${user.firstName} ${user.lastName}",
       "phone": user.phoneNumber,
       "email": user.email,
       "password1": user.password,
@@ -26,7 +26,7 @@ class RegistrationServiceImpl implements RegistrationService {
         'Content-Type': 'application/json',
       },
     );
-    developer.log(response.body);
+    developer.log(response.statusCode.toString());
     return response.statusCode;
   }
 }

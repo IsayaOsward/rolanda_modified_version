@@ -152,13 +152,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               email: emailController.text.trim(),
                               phoneNumber: phoneNumberController.text.trim(),
                               password: passwordController.text.trim(),
-                              confirmPassword: confirmPasswordController.text.trim(),
+                              confirmPassword:
+                                  confirmPasswordController.text.trim(),
                             );
 
                             final isSuccess =
                                 await registrationProvider.registerUser(user);
-
                             if (isSuccess == 201) {
+                              firstnameController.clear();
+                              lastnameController.clear();
+                              emailController.clear();
+                              phoneNumberController.clear();
+                              passwordController.clear();
+                              confirmPasswordController.clear();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
@@ -166,12 +172,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   ),
                                 ),
                               );
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.login);
                             } else if (isSuccess == 400) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
+                                const SnackBar(
                                   content: Text(
-                                    registrationProvider.errorMessage ??
-                                        "User with this Email already exists",
+                                    "Email or phone number already exists",
                                   ),
                                 ),
                               );
