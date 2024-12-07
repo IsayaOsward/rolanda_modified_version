@@ -173,15 +173,23 @@ class _ApartmentDetailsState extends State<ApartmentDetails> {
                                     initialRating: 4,
                                     maxRating: 5,
                                   ),
-                                  trailing: IconButton(
-                                      onPressed: () {
-                                        // CommonActions.shiftPage(
-                                        //     context, const HotelMapviewPage());
-                                      },
-                                      icon: const Icon(
-                                        Icons.location_on,
-                                        size: 35,
-                                      )),
+                                  trailing: Column(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          // CommonActions.shiftPage(
+                                          //     context, const HotelMapviewPage());
+                                        },
+                                        icon: const Icon(
+                                          Icons.location_on,
+                                          size: 35,
+                                        ),
+                                      ),
+                                      const Text(
+                                        "Google Map",
+                                      )
+                                    ],
+                                  ),
                                 )
                               ],
                             ),
