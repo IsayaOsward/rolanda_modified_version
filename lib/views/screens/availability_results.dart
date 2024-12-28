@@ -344,19 +344,21 @@ class AvailabilityResults extends StatelessWidget {
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Room Number: ${room['room_number']}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
+                          Expanded(
+                            child: Text(
+                              'Room Number: ${room['room_number']}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                          Text(
-                            'RID: ${room['rid']}',
-                            style: const TextStyle(
-                              color: Colors.grey,
-                            ),
-                          )
-                        ],
+                          // Text(
+                          //   'RID: ${room['rid']}',
+                          //   style: const TextStyle(
+                          //     color: Colors.grey,
+                          //   ),
+                          // )
+                        ],  
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

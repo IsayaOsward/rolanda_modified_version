@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:developer' as developer;
 import 'package:rolanda_modified_version/config/base_url.dart';
 
 import '../model/profile_model.dart';
@@ -27,6 +27,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
       );
 
       if (response.statusCode == 200) {
+                developer.log("=====================${response.body}");
+
         final profileData = json.decode(response.body);
         final profile = profileData['profile'];
         profile['email'] =

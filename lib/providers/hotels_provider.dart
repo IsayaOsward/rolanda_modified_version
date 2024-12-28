@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:rolanda_modified_version/config/base_url.dart';
 import 'package:rolanda_modified_version/model/hotel_model.dart';
+import 'dart:developer' as developer;
 
 class HotelsProvider extends ChangeNotifier {
   bool isLoading = true;
@@ -37,7 +38,7 @@ class HotelsProvider extends ChangeNotifier {
         final List hotelsJson = json.decode(response.body);
         _hotels =
             hotelsJson.map((hotelJson) => Hotel.fromJson(hotelJson)).toList();
-        
+
         
         _hotelResult = {
           "status": "ok",

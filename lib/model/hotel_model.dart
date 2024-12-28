@@ -2,12 +2,7 @@ class Hotel {
   final int id;
   final String name;
   final String description;
-  final String thumbnail;
-  final List<RoomType> roomTypes;
-  final List<Gallery> gallery;
-  final List<Feature> features;
-  final List<FAQ> faqs;
-  final District district;
+  final String image;
   final String address;
   final String mobile;
   final String email;
@@ -17,20 +12,20 @@ class Hotel {
   final bool featured;
   final String hid;
   final String slug;
-  final DateTime date;
+  final String date;
+  final List<RoomType> roomTypes;
+  final String thumbnail;
+  final List<Gallery> gallery;
+  final List<Feature> features;
+  final List<Faq> faqs;
   final int ratingCount;
-  final int userId;
+  final String? district;
 
   Hotel({
     required this.id,
     required this.name,
     required this.description,
-    required this.thumbnail,
-    required this.roomTypes,
-    required this.gallery,
-    required this.features,
-    required this.faqs,
-    required this.district,
+    required this.image,
     required this.address,
     required this.mobile,
     required this.email,
@@ -41,8 +36,13 @@ class Hotel {
     required this.hid,
     required this.slug,
     required this.date,
+    required this.roomTypes,
+    required this.thumbnail,
+    required this.gallery,
+    required this.features,
+    required this.faqs,
     required this.ratingCount,
-    required this.userId,
+    this.district,
   });
 
   factory Hotel.fromJson(Map<String, dynamic> json) {
@@ -50,16 +50,7 @@ class Hotel {
       id: json['id'],
       name: json['name'],
       description: json['description'],
-      thumbnail: json['thumbnail'],
-      roomTypes: (json['room_types'] as List)
-          .map((e) => RoomType.fromJson(e))
-          .toList(),
-      gallery:
-          (json['gallery'] as List).map((e) => Gallery.fromJson(e)).toList(),
-      features:
-          (json['features'] as List).map((e) => Feature.fromJson(e)).toList(),
-      faqs: (json['faqs'] as List).map((e) => FAQ.fromJson(e)).toList(),
-      district: District.fromJson(json['district']),
+      image: json['image'],
       address: json['address'],
       mobile: json['mobile'],
       email: json['email'],
@@ -69,9 +60,18 @@ class Hotel {
       featured: json['featured'],
       hid: json['hid'],
       slug: json['slug'],
-      date: DateTime.parse(json['date']),
+      date: json['date'],
+      roomTypes: (json['room_types'] as List)
+          .map((e) => RoomType.fromJson(e))
+          .toList(),
+      thumbnail: json['thumbnail'],
+      gallery:
+          (json['gallery'] as List).map((e) => Gallery.fromJson(e)).toList(),
+      features:
+          (json['features'] as List).map((e) => Feature.fromJson(e)).toList(),
+      faqs: (json['faqs'] as List).map((e) => Faq.fromJson(e)).toList(),
       ratingCount: json['rating_count'],
-      userId: json['user'],
+      district: json['district'],
     );
   }
 }
@@ -79,12 +79,12 @@ class Hotel {
 class RoomType {
   final int id;
   final String type;
-  final double price;
+  final String price;
   final int numberOfBeds;
   final int roomCapacity;
   final String rtid;
   final String slug;
-  final DateTime date;
+  final String date;
   final int hotel;
 
   RoomType({
@@ -103,12 +103,12 @@ class RoomType {
     return RoomType(
       id: json['id'],
       type: json['type'],
-      price: double.parse(json['price']),
+      price: json['price'],
       numberOfBeds: json['number_of_beds'],
       roomCapacity: json['room_capacity'],
       rtid: json['rtid'],
       slug: json['slug'],
-      date: DateTime.parse(json['date']),
+      date: json['date'],
       hotel: json['hotel'],
     );
   }
@@ -118,10 +118,7 @@ class Gallery {
   final int id;
   final String imageUrl;
 
-  Gallery({
-    required this.id,
-    required this.imageUrl,
-  });
+  Gallery({required this.id, required this.imageUrl});
 
   factory Gallery.fromJson(Map<String, dynamic> json) {
     return Gallery(
@@ -136,11 +133,7 @@ class Feature {
   final String name;
   final String icon;
 
-  Feature({
-    required this.id,
-    required this.name,
-    required this.icon,
-  });
+  Feature({required this.id, required this.name, required this.icon});
 
   factory Feature.fromJson(Map<String, dynamic> json) {
     return Feature(
@@ -151,65 +144,18 @@ class Feature {
   }
 }
 
-class FAQ {
+class Faq {
   final int id;
   final String question;
   final String answer;
 
-  FAQ({
-    required this.id,
-    required this.question,
-    required this.answer,
-  });
+  Faq({required this.id, required this.question, required this.answer});
 
-  factory FAQ.fromJson(Map<String, dynamic> json) {
-    return FAQ(
+  factory Faq.fromJson(Map<String, dynamic> json) {
+    return Faq(
       id: json['id'],
       question: json['question'],
       answer: json['answer'],
-    );
-  }
-}
-
-class District {
-  final int id;
-  final String code;
-  final String name;
-  final Region region;
-
-  District({
-    required this.id,
-    required this.code,
-    required this.name,
-    required this.region,
-  });
-
-  factory District.fromJson(Map<String, dynamic> json) {
-    return District(
-      id: json['id'],
-      code: json['code'],
-      name: json['name'],
-      region: Region.fromJson(json['region']),
-    );
-  }
-}
-
-class Region {
-  final int id;
-  final String code;
-  final String name;
-
-  Region({
-    required this.id,
-    required this.code,
-    required this.name,
-  });
-
-  factory Region.fromJson(Map<String, dynamic> json) {
-    return Region(
-      id: json['id'],
-      code: json['code'],
-      name: json['name'],
     );
   }
 }

@@ -38,7 +38,7 @@ class CheckAvailabilityProvider with ChangeNotifier {
       'adult': numberOfAdults,
       'children': numberOfChildren,
     });
-
+    print("==========================> $requestData");
     try {
       final response =
           await http.post(url, headers: headers, body: requestData);
@@ -51,6 +51,8 @@ class CheckAvailabilityProvider with ChangeNotifier {
               parsedUrl.isAbsolute ? parsedUrl : url.resolve(redirectUrl);
           final redirectedResponse = await http.get(fullUrl);
           _bookingResponse = jsonDecode(redirectedResponse.body);
+          print(
+              "============================================$_bookingResponse");
         } else {
           _error = 'No redirect URL provided';
         }
