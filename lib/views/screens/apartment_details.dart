@@ -159,38 +159,44 @@ class _ApartmentDetailsState extends State<ApartmentDetails> {
                                 SizedBox(
                                   height: Dimensions.height10,
                                 ),
-                                ListTile(
-                                  minVerticalPadding: 0,
-                                  //dense: true,
-                                  visualDensity: const VisualDensity(
-                                      horizontal: -3, vertical: -4),
-                                  contentPadding: const EdgeInsets.all(0),
-                                  title: Text(widget.hotels.address),
-                                  subtitle: const RatingBar.readOnly(
-                                    filledIcon: Icons.star,
-                                    size: 20,
-                                    emptyIcon: Icons.star_border,
-                                    initialRating: 4,
-                                    maxRating: 5,
-                                  ),
-                                  trailing: Column(
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          // CommonActions.shiftPage(
-                                          //     context, const HotelMapviewPage());
-                                        },
-                                        icon: const Icon(
-                                          Icons.location_on,
-                                          size: 35,
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: ListTile(
+                                        minVerticalPadding: 0,
+                                        //dense: true,
+                                        visualDensity: const VisualDensity(
+                                            horizontal: -3, vertical: -4),
+                                        contentPadding: const EdgeInsets.all(0),
+                                        title: Text(widget.hotels.address),
+                                        subtitle: const RatingBar.readOnly(
+                                          filledIcon: Icons.star,
+                                          size: 20,
+                                          emptyIcon: Icons.star_border,
+                                          initialRating: 4,
+                                          maxRating: 5,
                                         ),
                                       ),
-                                      const Text(
-                                        "Google Map",
-                                      )
-                                    ],
-                                  ),
-                                )
+                                    ),
+                                    Column(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+                                            // CommonActions.shiftPage(
+                                            //     context, const HotelMapviewPage());
+                                          },
+                                          icon: const Icon(
+                                            Icons.location_on,
+                                            size: 35,
+                                          ),
+                                        ),
+                                        const Text(
+                                          "Google Map",
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),

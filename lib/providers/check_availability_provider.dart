@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:rolanda_modified_version/config/base_url.dart';
+import 'dart:developer' as developer;
 
 class CheckAvailabilityProvider with ChangeNotifier {
   final DateFormat _dateFormat = DateFormat('dd/MM/yyyy');
@@ -51,7 +52,7 @@ class CheckAvailabilityProvider with ChangeNotifier {
               parsedUrl.isAbsolute ? parsedUrl : url.resolve(redirectUrl);
           final redirectedResponse = await http.get(fullUrl);
           _bookingResponse = jsonDecode(redirectedResponse.body);
-          print(
+          developer.log(
               "============================================$_bookingResponse");
         } else {
           _error = 'No redirect URL provided';
